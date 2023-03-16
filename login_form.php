@@ -437,7 +437,7 @@
             margin: 100px;
             padding: 25px 20px 10px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            width: 400px;
+            width: 320px;
             box-sizing: border-box;
         }
 
