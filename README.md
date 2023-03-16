@@ -1,1 +1,2 @@
-# Food_store_website
+# Food store website 
+# Using HTML, CSS, JS, PHP and MySQL
