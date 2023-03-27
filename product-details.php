@@ -53,7 +53,7 @@
                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
                 <div class="dropdown-menu">
-                  <a class="dropdown-item active" href="about.php">About Us</a>
+                  <a class="dropdown-item active" href="#about.php">About Us</a>
                   <a class="dropdown-item" href="blog.php">Blog</a>
                   <a class="dropdown-item" href="testimonials.php">Testimonials</a>
                   <a class="dropdown-item" href="terms.php">Terms</a>
