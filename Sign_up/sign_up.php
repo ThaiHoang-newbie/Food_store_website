@@ -196,6 +196,7 @@ session_start();
                 <form action="" method="POST">
                     <input id="email" type="email" name="email" placeholder="Enter your email">
                     <button id="btn" type="submit" name="button"><i class="fas fa-paper-plane"></i></button>
+                    
                     <?php
                     if (isset($_POST['button']) && isset($_POST['email'])) {
 
@@ -210,6 +211,7 @@ session_start();
                         }
                     }
                     ?>
+
                 </form>
 
             </div>
@@ -241,84 +243,84 @@ session_start();
     <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/SplitText3.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/TextPlugin.min.js'></script>
     <script id="rendered-js">
-        var cloudOne = gsap.timeline({
-            repeat: -1,
-            delay: -12
-        });
-        cloudOne.to("#cloud-one", 36, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudTwo = gsap.timeline({
-            repeat: -1,
-            delay: -3
-        });
-        cloudTwo.to("#cloud-two", 24, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudFour = gsap.timeline({
-            repeat: -1,
-            delay: 4
-        });
-        cloudFour.to("#cloud-four", 33, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudFive = gsap.timeline({
-            repeat: -1
-        });
-        cloudFive.to("#cloud-five", 24, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        // $("#email").focus(function() {
-        //     if ($("#email").val() == "") {
-        //         $("#placeholder").fadeToggle();
-        //     }
-        // });
-        // $("#email").focusout(function() {
-        //     if ($("#email").val() == "") {
-        //         $("#placeholder").fadeToggle();
-        //     }
-        // });
-
-        $("#btn").mouseenter(function() {
-            gsap.to("#btnSVG", .3, {
-                fill: "#d85168"
-            });
-        });
-        $("#btn").mouseleave(function() {
-            gsap.to("#btnSVG", .3, {
-                fill: "#ed563b"
-            });
-        });
-
-        $("#email").on("keypress", function(e) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                $("#btn").click();
-            }
-        });
-
-        gsap.set("#mail", {
-            scale: 0,
-            x: 20,
-            transformOrigin: "right"
-        });
-
         <?php
         if ($executeCode) {
         ?>
-            $("#btn").click(function() {
+            var cloudOne = gsap.timeline({
+                repeat: -1,
+                delay: -12
+            });
+            cloudOne.to("#cloud-one", 36, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
+
+            var cloudTwo = gsap.timeline({
+                repeat: -1,
+                delay: -3
+            });
+            cloudTwo.to("#cloud-two", 24, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
+
+            var cloudFour = gsap.timeline({
+                repeat: -1,
+                delay: 4
+            });
+            cloudFour.to("#cloud-four", 33, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
+
+            var cloudFive = gsap.timeline({
+                repeat: -1
+            });
+            cloudFive.to("#cloud-five", 24, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
+
+            // $("#email").focus(function() {
+            //     if ($("#email").val() == "") {
+            //         $("#placeholder").fadeToggle();
+            //     }
+            // });
+            // $("#email").focusout(function() {
+            //     if ($("#email").val() == "") {
+            //         $("#placeholder").fadeToggle();
+            //     }
+            // });
+
+            $("#btn").mouseenter(function() {
+                gsap.to("#btnSVG", .3, {
+                    fill: "#d85168"
+                });
+            });
+            $("#btn").mouseleave(function() {
+                gsap.to("#btnSVG", .3, {
+                    fill: "#ed563b"
+                });
+            });
+
+            $("#email").on("keypress", function(e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    $("#btn").click();
+                }
+            });
+
+            gsap.set("#mail", {
+                scale: 0,
+                x: 20,
+                transformOrigin: "right"
+            });
+
+            $(":submit").click(function() {
                 animation();
-                setTimeout(function() {
-                    window.location = "http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php";
-                }, 4500);
+            });
+            $(":submit").click(function() {
+                window.location = 'http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php';
             });
         <?php }
         ?>
@@ -554,9 +556,7 @@ session_start();
         position: relative;
     }
 
-    ::placeholder  {
-        left: -115px;
-        top: -50px;
+    ::placeholder {
         pointer-events: none;
         font-family: "Open Sans", sans-serif;
         font-size: 18px;
