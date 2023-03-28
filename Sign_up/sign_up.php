@@ -190,16 +190,24 @@ session_start();
         </svg>
 
         <div id="textWrapper">
-            <h1 id="title">Join the Club</h1>
+            <h1 id="title">Join the Food Store</h1>
 
             <div id="formWrapper">
                 <form action="" method="POST">
-                    <p id="placeholder">Enter your email</p>
-                    <input id="email" type="email" name="email">
-                    <button id="btn" type="submit" name="but"><i class="fas fa-paper-plane"></i></button>
+                    <input id="email" type="email" name="email" placeholder="Enter your email">
+                    <button id="btn" type="submit" name="button"><i class="fas fa-paper-plane"></i></button>
                     <?php
-                    if (isset($_POST['but']) && isset($_POST['email'])) {
-                        $_SESSION['email'] = $_POST['email'];
+                    if (isset($_POST['button']) && isset($_POST['email'])) {
+
+                        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
+                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                            $_SESSION['email'] = $email;
+                            $executeCode = true;
+                        } else {
+                            $executeCode = false;
+                            echo "<script>alert('Invalid email')</script>";
+                        }
                     }
                     ?>
                 </form>
@@ -210,7 +218,6 @@ session_start();
             <p id="success">Please, confirm your email to continue.</p>
         </div>
     </div>
-    <script src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
 
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/gsap.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/CSSRulePlugin.min.js'></script>
@@ -269,16 +276,16 @@ session_start();
             ease: Linear.easeNone
         });
 
-        $("#email").focus(function() {
-            if ($("#email").val() == "") {
-                $("#placeholder").fadeToggle();
-            }
-        });
-        $("#email").focusout(function() {
-            if ($("#email").val() == "") {
-                $("#placeholder").fadeToggle();
-            }
-        });
+        // $("#email").focus(function() {
+        //     if ($("#email").val() == "") {
+        //         $("#placeholder").fadeToggle();
+        //     }
+        // });
+        // $("#email").focusout(function() {
+        //     if ($("#email").val() == "") {
+        //         $("#placeholder").fadeToggle();
+        //     }
+        // });
 
         $("#btn").mouseenter(function() {
             gsap.to("#btnSVG", .3, {
@@ -287,7 +294,7 @@ session_start();
         });
         $("#btn").mouseleave(function() {
             gsap.to("#btnSVG", .3, {
-                fill: "#e96f8c"
+                fill: "#ed563b"
             });
         });
 
@@ -304,14 +311,17 @@ session_start();
             transformOrigin: "right"
         });
 
-        $("#btn").click(function() {
-            animation();
-            setTimeout(function() {
-                window.location = "http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php";
-            }, 4500);
-        });
-
-        //# sourceURL=pen.js
+        <?php
+        if ($executeCode) {
+        ?>
+            $("#btn").click(function() {
+                animation();
+                setTimeout(function() {
+                    window.location = "http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php";
+                }, 4500);
+            });
+        <?php }
+        ?>
     </script>
 
 
@@ -323,6 +333,7 @@ session_start();
 <script>
     function animation() {
         var submit = gsap.timeline();
+        // submit.to("#title, #disclaimer, #btn, #email, #placeholder", {
         submit.to("#title, #disclaimer, #btn, #email, #placeholder", {
             opacity: 0,
             pointerEvents: "none",
@@ -495,7 +506,7 @@ session_start();
 
     h1 {
         font-family: "Pacifico", Helvetica, sans-serif;
-        color: #E96F8C;
+        color: #ed563b;
         font-weight: 300;
         font-size: 42px;
         position: relative;
@@ -543,8 +554,7 @@ session_start();
         position: relative;
     }
 
-    #placeholder {
-        position: absolute;
+    ::placeholder  {
         left: -115px;
         top: -50px;
         pointer-events: none;
@@ -553,7 +563,6 @@ session_start();
         font-style: italic;
         color: rgba(0, 0, 0, .3);
         text-align: center;
-        width: 190px;
     }
 
     button {
@@ -595,14 +604,14 @@ session_start();
         }
 
         #email,
-        #placeholder {
+        /* #placeholder {
             font-size: 14px;
         }
 
         #placeholder {
             top: -46px;
             left: -108px;
-        }
+        } */
 
         #email {
             top: -41px;
@@ -664,7 +673,7 @@ session_start();
     }
 
     .st8 {
-        fill: #E96F8C;
+        fill: #ed563b;
     }
 
     .st9 {

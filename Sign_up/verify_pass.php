@@ -13,6 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+
 </head>
 
 
@@ -23,7 +24,6 @@
 
 
     <form action="javascript: void(0)" class="otp-form" name="otp-form">
-
         <div class="title">
             <h3>OTP VERIFICATION</h3>
 
@@ -44,25 +44,17 @@
                         return $hidden_email;
                     }
                     $verify_email = $_SESSION['email'];
-                    echo "Email address from session: " . $verify_email . "<br>";
-                    $hidden_email = hidden_email($verify_email);
-                    echo "Hidden email address: " . $hidden_email . "<br>";
-                    echo $hidden_email;
-                } else {
-                    echo "Email address not found in session.";
+                    echo hidden_email($verify_email);
                 }
                 ?>
 
             </p>
-
             <?php // Sending email
             use PHPMailer\PHPMailer\PHPMailer;
             use PHPMailer\PHPMailer\Exception;
 
-            //Load Composer's autoloader
             require '../vendor/autoload.php';
 
-            // Random password
             if (isset($_SESSION['email'])) {
 
                 // Setting mail
@@ -77,9 +69,8 @@
                     $mail->Username = 'thaihoang20112k3@gmail.com';
                     $mail->Password = 'nvygpergzqfvnacw';
                     $mail->SMTPSecure = 'ssl';
-                    $mail->SMTPDebug = 2;
+                    $mail->SMTPDebug = 0;
                     $mail->Port = 465;
-
 
                     $mail->setFrom('thaihoang20112k3@gmail.com');
                     $mail->addAddress($verify_email);
@@ -88,15 +79,11 @@
                     $mail->Body = "Here is your password: " . $password;
                     $mail->send();
                 };
-                setting_mail($verify_email, function () {
-                    $length = 8;
-                    $randomString = '';
-                    for ($i = 0; $i < $length; $i++) {
-                        $randomString .= mt_rand(0, 9);
-                    }
-                    return $randomString;
-                });
-            }
+
+                $verify_email = $_SESSION['email'];
+                $password = random_int(100000, 999999);
+                setting_mail($verify_email, $password);
+            };
             ?>
 
             <p class="msg">Please enter OTP to verify</p>
@@ -117,9 +104,6 @@
 
 
     </form>
-
-
-
 
 
     <style id="INLINE_PEN_STYLESHEET_ID">
@@ -147,7 +131,7 @@
 
         .title h3 {
             font-weight: bold;
-            color: green;
+            color: #ed563b;
         }
 
         .title p {
@@ -178,7 +162,7 @@
             width: 40px;
             background-color: transparent;
             border-radius: 4px;
-            border: 1px solid #2f8f1f;
+            border: 1px solid #ed563b;
             text-align: center;
             outline: none;
             font-size: 16px;

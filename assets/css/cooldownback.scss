@@ -1,0 +1,56 @@
+$buttonBaseColor: #336699;
+$disableDuration: 15s;
+button.cooldown {
+  background: $buttonBaseColor;
+  min-height: 48px;
+  min-width: 144px;
+  position: relative;
+  margin: 5px;
+  border-radius: 5px;
+  border: 0;
+  color: #fff;
+  padding: 0 15px;
+  font-size: 16px;
+  outline: none;
+  overflow: hidden;
+  cursor: pointer;
+  &:active,
+  &:focus {
+    outline: none;
+  }
+  &:disabled {
+    background: darken($buttonBaseColor, 10%);
+    color: darken(#fff, 15%);
+    cursor: default;
+    box-shadow: inset 3px 3px 10px 0px rgba(0, 0, 0, 0.2);
+    &:after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+      height: 5px;
+      background: darken($buttonBaseColor, 20%);
+      animation: cooldown $disableDuration linear;
+    }
+  }
+}
+
+@keyframes cooldown {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+/* layout stuff */
+section {
+  text-align: center;
+  margin-top: 100px;
+  color: #333;
+}
+p {
+  font-size: 12px;
+}
