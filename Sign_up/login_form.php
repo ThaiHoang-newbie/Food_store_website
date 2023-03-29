@@ -8,23 +8,28 @@
     <title>Login</title>
 </head>
 
+
 <body>
     <div class="container">
         <div class="card">
             <h1 class="card_title">Login</h1>
+            
             <form class="card_form">
                 <div class="input">
                     <input type="text" class="input_field" required />
                     <label class="input_label">User name</label>
                 </div>
+
                 <div class="input">
                     <input type="phone" class="input_field" required />
                     <label class="input_label">Phone number</label>
                 </div>
+
                 <div class="input">
                     <input type="text" class="input_field" required />
                     <label class="input_label">Address</label>
                 </div>
+
                 <div class="input">
                     <select>
                         <option value="customer">Customer</option>
@@ -40,9 +45,6 @@
         </div>
         <div class="fish-shadow-con">
             <svg class="fish-shadow" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMin slice" viewBox="0 0 743 645">
-
-
-
                 <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
                     <path d="M177.367 337.568L182.709 357.739C198.517 417.421 249.748 460.995 311.193 467.019L421.508 477.834C478.237 483.396 532.831 454.649 560.346 404.729C607.09 319.923 557.549 214.182 462.47 195.822L375.079 178.946C368.369 177.651 361.766 175.854 355.324 173.572C251.651 136.837 149.205 231.245 177.367 337.568Z" class="line" id="Line" />
 

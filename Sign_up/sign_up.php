@@ -1,6 +1,23 @@
 <?php
+
 session_start();
+
+if (isset($_POST['button']) && isset($_POST['email'])) {
+
+    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['email'] = $email;
+        header("Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php");
+        die();
+    } else {
+        echo "<script>
+            alert('Email invalid');
+        </script>";
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,26 +26,15 @@ session_start();
 
 
     <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-
     <meta name="apple-mobile-web-app-title" content="CodePen">
 
 
     <link rel="mask-icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111" />
-
-
-
-
     <title>Mailbox Submit</title>
-
-
-
-
-
-
-
 </head>
 
 <body translate="no">
+    <script src="../assets/js/verify_pass.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/bf5ba39767.js" crossorigin="anonymous"></script>
 
@@ -196,21 +202,6 @@ session_start();
                 <form action="" method="POST">
                     <input id="email" type="email" name="email" placeholder="Enter your email">
                     <button id="btn" type="submit" name="button"><i class="fas fa-paper-plane"></i></button>
-                    
-                    <?php
-                    if (isset($_POST['button']) && isset($_POST['email'])) {
-
-                        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-
-                        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                            $_SESSION['email'] = $email;
-                            $executeCode = true;
-                        } else {
-                            $executeCode = false;
-                            echo "<script>alert('Invalid email')</script>";
-                        }
-                    }
-                    ?>
 
                 </form>
 
@@ -244,86 +235,81 @@ session_start();
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/TextPlugin.min.js'></script>
     <script id="rendered-js">
         <?php
-        if ($executeCode) {
+        // if ($executeCode) {
         ?>
-            var cloudOne = gsap.timeline({
-                repeat: -1,
-                delay: -12
-            });
-            cloudOne.to("#cloud-one", 36, {
-                x: "-720px",
-                ease: Linear.easeNone
-            });
+        var cloudOne = gsap.timeline({
+            repeat: -1,
+            delay: -12
+        });
+        cloudOne.to("#cloud-one", 36, {
+            x: "-720px",
+            ease: Linear.easeNone
+        });
 
-            var cloudTwo = gsap.timeline({
-                repeat: -1,
-                delay: -3
-            });
-            cloudTwo.to("#cloud-two", 24, {
-                x: "-720px",
-                ease: Linear.easeNone
-            });
+        var cloudTwo = gsap.timeline({
+            repeat: -1,
+            delay: -3
+        });
+        cloudTwo.to("#cloud-two", 24, {
+            x: "-720px",
+            ease: Linear.easeNone
+        });
 
-            var cloudFour = gsap.timeline({
-                repeat: -1,
-                delay: 4
-            });
-            cloudFour.to("#cloud-four", 33, {
-                x: "-720px",
-                ease: Linear.easeNone
-            });
+        var cloudFour = gsap.timeline({
+            repeat: -1,
+            delay: 4
+        });
+        cloudFour.to("#cloud-four", 33, {
+            x: "-720px",
+            ease: Linear.easeNone
+        });
 
-            var cloudFive = gsap.timeline({
-                repeat: -1
-            });
-            cloudFive.to("#cloud-five", 24, {
-                x: "-720px",
-                ease: Linear.easeNone
-            });
+        var cloudFive = gsap.timeline({
+            repeat: -1
+        });
+        cloudFive.to("#cloud-five", 24, {
+            x: "-720px",
+            ease: Linear.easeNone
+        });
 
-            // $("#email").focus(function() {
-            //     if ($("#email").val() == "") {
-            //         $("#placeholder").fadeToggle();
-            //     }
-            // });
-            // $("#email").focusout(function() {
-            //     if ($("#email").val() == "") {
-            //         $("#placeholder").fadeToggle();
-            //     }
-            // });
+        // $("#email").focus(function() {
+        //     if ($("#email").val() == "") {
+        //         $("#placeholder").fadeToggle();
+        //     }
+        // });
+        // $("#email").focusout(function() {
+        //     if ($("#email").val() == "") {
+        //         $("#placeholder").fadeToggle();
+        //     }
+        // });
 
-            $("#btn").mouseenter(function() {
-                gsap.to("#btnSVG", .3, {
-                    fill: "#d85168"
-                });
+        $("#btn").mouseenter(function() {
+            gsap.to("#btnSVG", .3, {
+                fill: "#d85168"
             });
-            $("#btn").mouseleave(function() {
-                gsap.to("#btnSVG", .3, {
-                    fill: "#ed563b"
-                });
+        });
+        $("#btn").mouseleave(function() {
+            gsap.to("#btnSVG", .3, {
+                fill: "#ed563b"
             });
+        });
 
-            $("#email").on("keypress", function(e) {
-                var keyCode = e.keyCode || e.which;
-                if (keyCode === 13) {
-                    $("#btn").click();
-                }
-            });
+        $("#email").on("keypress", function(e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode === 13) {
+                $("#btn").click();
+            }
+        });
 
-            gsap.set("#mail", {
-                scale: 0,
-                x: 20,
-                transformOrigin: "right"
-            });
+        gsap.set("#mail", {
+            scale: 0,
+            x: 20,
+            transformOrigin: "right"
+        });
 
-            $(":submit").click(function() {
-                animation();
-            });
-            $(":submit").click(function() {
-                window.location = 'http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php';
-            });
-        <?php }
-        ?>
+        $(":submit").click(function() {
+            animation();
+        });
     </script>
 
 
