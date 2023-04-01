@@ -6,14 +6,11 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="robots" content="noindex">
-
-
     <link rel="mask-icon" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg" color="#111">
     <link rel="canonical" href="https://codepen.io/thaihoang2011/pen/bGxQvgd">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-
 </head>
 
 
@@ -47,16 +44,19 @@
                 ?>
 
             </p>
-            <?php // Sending email
+            <?php // Sendding email
             use PHPMailer\PHPMailer\PHPMailer;
             use PHPMailer\PHPMailer\Exception;
 
+            include("./connect_db.php");
             require '../vendor/autoload.php';
 
             if (isset($_SESSION['email'])) {
 
+                $verify_email = $_SESSION['email'];
+
                 // Setting mail
-                function setting_mail($verify_email, $password)
+                function sendding_mail($verify_email, $password)
                 {
                     $mail = new PHPMailer(true);
 
@@ -78,34 +78,20 @@
                     $mail->send();
                 };
 
-                // Call random and setting mail
-                $verify_email = $_SESSION['email'];
+                // Check exist email
+                $select_email = "SELECT `email` FROM `user` WHERE `email` = '$verify_email'";
+                $check_email = mysqli_query($conn, $select_email);
 
-                $password = random_int(100000, 999999);
-                setting_mail($verify_email, $password);
-
-                include("./connect_db.php");
-
-                // Check duplicate email
-                $select = "SELECT `user_id` FROM `user` WHERE `email` = '$verify_email'";
-                $check_dup_email = mysqli_query($conn, $select);
-
-                if (mysqli_num_rows($check_dup_email) > 0) {
-                    echo "<script>alert('This email is already being used')</script>";
+                if (mysqli_num_rows($check_email) != 0) {
                 } else {
+                    $password = random_int(100000, 999999);
+                    // Call sendding_mail function
+                    sendding_mail($verify_email, $password);
+
                     // Insert email and pass in the database
                     $sql = "INSERT INTO `User`(`email`,`user_password`) VALUES ('$verify_email','$password')";
                     $result = mysqli_query($conn, $sql);
-                    if ($result) {
-                        echo "<script>alert('Register sucessfuled')</script>";
-                    } else {
-                        echo "<script>alert('Register failed')</script>";
-                    };
-                };
-
-
-                // Close the connection
-                mysqli_close($conn);
+                }
             };
             ?>
 
@@ -121,13 +107,59 @@
         </div>
 
 
+
         <div class="result">
             <p id="_otp" class="_notok">Your password</p>
         </div>
 
 
+        <?php
+
+        function get_valueFromStringUrl($url, $parameter_name)
+        {
+            $parts = parse_url($url);
+            if (isset($parts['query'])) {
+                parse_str($parts['query'], $query);
+                if (isset($query[$parameter_name])) {
+                    return $query[$parameter_name];
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        }
+
+        // Get current url
+        $protocol = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+        $CurPageURL = $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+        // Get variableName user entered
+        $variableName = get_valueFromStringUrl($CurPageURL, "variableName");
+
+        $select_user_pass = "SELECT `user_password` FROM `user` WHERE `email` = '$verify_email'";
+        $conn_user_pass = mysqli_query($conn, $select_user_pass);
+
+        if ($row = mysqli_fetch_assoc($conn_user_pass)) {
+            if ($variableName == $row['user_password']) {
+                header('Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php');
+                exit();
+            } else if ($variableName == null) {
+            } else {
+                echo "<script>alert('Password incorrect')</script>";
+            }
+        } else {
+            echo "<script>alert('User not found')</script>";
+        }
+
+        ?>
+
     </form>
 
+
+
+    <script src="../assets/js/verify_pass.js">
+    </script>
 
     <style id="INLINE_PEN_STYLESHEET_ID">
         * {
@@ -450,11 +482,6 @@
 
         /*#endregion Alert*/
     </style>
-    <script src="https://cpwebassets.codepen.io/assets/editor/iframe/iframeConsoleRunner-6bce046e7128ddf9391ccf7acbecbf7ce0cbd7b6defbeb2e217a867f51485d25.js">
-        < script script src = "https://cpwebassets.codepen.io/assets/editor/iframe/iframeRefreshCSS-44fe83e49b63affec96918c9af88c0d80b209a862cf87ac46bc933074b8c557d.js" / >
-    </script>
-    <script src="https://cpwebassets.codepen.io/assets/editor/iframe/iframeRuntimeErrors-4f205f2c14e769b448bcf477de2938c681660d5038bc464e3700256713ebe261.js"></script>
-    <script src="../assets/js/verify_pass.js"></script>
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>

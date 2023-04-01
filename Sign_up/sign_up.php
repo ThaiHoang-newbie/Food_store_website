@@ -2,18 +2,27 @@
 
 session_start();
 
+include("./connect_db.php");
+
 if (isset($_POST['button']) && isset($_POST['email'])) {
 
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
     if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $_SESSION['email'] = $email;
-        header("Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php");
-        die();
+
+        // Check exist email
+        $select_email = "SELECT `email` FROM `user` WHERE `email` = '$email'";
+        $check_email = mysqli_query($conn, $select_email);
+
+        if (mysqli_num_rows($check_email) != 0) {
+            echo "<script>alert('This email was being used')</script>";
+        } else {
+            $_SESSION['email'] = $email;
+            header("Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php");
+            die();
+        }
     } else {
-        echo "<script>
-            alert('Email invalid');
-        </script>";
+        echo "<script>alert('Email invalid');</script>";
     }
 }
 ?>
