@@ -4,7 +4,7 @@
 <head>
 
   <meta charset='UTF-8'>
-  <title>CodePen Demo</title>
+  <title>Login</title>
 
   <meta name="robots" content="noindex">
 
@@ -67,6 +67,9 @@
 
           <?php
           // Login
+
+          use function PHPSTORM_META\type;
+
           if (isset($_POST['btn-login'])) {
             include('../Sign_up/connect_db.php');
             $email_input = $_POST['email'];
@@ -81,15 +84,15 @@
             $conn_log_user_pass = mysqli_query($conn, $select_log_user_pass);
             $p_fetch = mysqli_fetch_assoc($conn_log_user_pass);
 
-            if ($e_fetch != 0) {
-              if ($p_fetch != 0) {
+            if (!empty($e_fetch)) {
+              if (!empty($p_fetch)) {
                 header("Location: http://localhost/Food_store_website/");
               } else {
                 echo "<script>alert('Wrong password')</script>";
               }
             } else {
-              echo "<script>alert('User not exist')</script>";
-            };
+              echo "<script>alert('User does not exists')</script>";
+            }
           }
           ?>
 
