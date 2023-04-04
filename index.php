@@ -17,6 +17,14 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #avt {
+            border-radius: 70%;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,7 +56,6 @@
                         <ul class="nav">
                             <li><a href="index.php">Home</a></li>
                             <li><a href="products.php">Products</a></li>
-                            <li><a href="checkout.php">Checkout</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
@@ -60,6 +67,8 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
+                            <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                            <li><a href="user.php"><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>

@@ -2,7 +2,23 @@
 <html lang="en">
 
 <head>
+    <style>
+        img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            width: 150px;
+            height: 150px;
+        }
 
+        #avt {
+            border-radius: 70%;
+            width: 30px;
+            height: 30px;
+        }
+
+    </style>
+    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -16,6 +32,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
 
     <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 
@@ -48,7 +66,6 @@
                         <ul class="nav">
                             <li><a href="index.php">Home</a></li>
                             <li><a href="products.php">Products</a></li>
-                            <li><a href="checkout.php">Checkout</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
@@ -60,6 +77,8 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
+                            <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                            <li><a href=""><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -90,34 +109,65 @@
     <!-- ***** Call to Action End ***** -->
 
     <!-- ***** Fleet Starts ***** -->
+
     <section class="section" id="trainers">
         <div class="container">
             <br>
             <br>
+            <?php
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "food_store";
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/product-1-720x480.jpg" alt="">
+            // Create connection
+            $mysqli = new mysqli($servername, $username, $password, $dbname);
+            if ($mysqli === false) {
+                die("ERROR: Could not connect. " . $mysqli->connect_error);
+            }
+
+            $sql = "SELECT * FROM product;";
+            $result = $mysqli->query($sql);
+
+            if ($result->num_rows > 0) {
+                // output data of each row
+            ?>
+                <div class="row">
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                        <div class="col-lg-3">
+                            <div class="trainer-item">
+
+                                <div class="image-thumb">
+                                    <img src="<?php echo $row["image_url"]; ?>" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span>
+                                        <?php if (empty($row["newprice"])) { ?>
+                                            <sup>$</sup><em><?php echo $row["price"]; ?></em>
+                                        <?php } else { ?>
+                                           <del><sup>$</sup><?php echo $row["price"]; ?></del> <sup>$</sup><em><?php echo $row["newprice"]; ?></em>
+                                        <?php } ?>
+                                    </span>
+
+                                    <h4><?php echo $row["product_name"]; ?></h4>
+
+                                    <p><?php echo $row["description"]; ?></p>
+
+                                    <ul class="social-icons">
+                                        <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Details</a></li>
+                                        <li><a href="orders.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="down-content">
-                            <span>
-                                <del><sup>$</sup>15.00</del> <sup>$</sup>17.00
-                            </span>
-
-                            <h4>Lorem ipsum dolor sit amet, consectetur</h4>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, libero, reprehenderit? Aliquam vel, voluptate placeat, porro nemo impedit reprehenderit eligendi.</p>
-
-                            <ul class="social-icons">
-                                <li><a href="product-details.php">+ Order</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                <?php  }
+                } else {
+                    echo "0 results";
+                }
+                $mysqli->close();
+                ?>
                 </div>
 
-        </div>
     </section>
     <!-- ***** Fleet Ends ***** -->
 

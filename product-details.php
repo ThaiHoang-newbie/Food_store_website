@@ -3,20 +3,32 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
 
-  <title>Final PHP | Food Store Website</title>
+    <title>Final PHP | Food Store Website</title>
 
-  <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 
-  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
 
-  <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- -- SweetAlert  -->
+  <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <style>
+        #avt {
+            border-radius: 70%;
+            width: 30px;
+            height: 30px;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,7 +60,6 @@
             <ul class="nav">
               <li><a href="index.php">Home</a></li>
               <li><a href="products.php">Products</a></li>
-              <li><a href="checkout.php">Checkout</a></li>
               <li class="dropdown">
                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
@@ -60,6 +71,8 @@
                 </div>
               </li>
               <li><a href="contact.php">Contact</a></li>
+              <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+              <li><a href=""><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -71,20 +84,46 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
+  <?php
+  $id = $_GET["id"];
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "food_store";
+  // Create connection
+  $mysqli = new mysqli($servername, $username, $password, $dbname);
+  if ($mysqli === false) {
+    die("ERROR: Could not connect. " . $mysqli->connect_error);
+  }
 
+  $sql = "SELECT * FROM product;";
+  $result = $mysqli->query($sql);
+  ?>
   <!-- ***** Call to Action Start ***** -->
   <section class="section section-bg" id="call-to-action" style="background-image: url(assets/images/banner-image-1-1920x500.jpg)">
     <div class="container">
-      <div class="row">
-        <div class="col-lg-10 offset-lg-1">
-          <div class="cta-content">
-            <br>
-            <br>
-            <h2><del><sup>$</sup>18.00</del> <em><sup>$</sup>17.00</em></h2>
-            <p>Lorem ipsum dolor sit amet, consectetur.</p>
-          </div>
+      <?php if ($result->num_rows > 0) {
+        // output data of each row
+      ?>
+        <div class="row">
+          <?php while ($row = $result->fetch_assoc()) {
+            if ($id == $row["product_id"]) { ?>
+              <div class="col-lg-10 offset-lg-1">
+                <div class="cta-content">
+                  <br>
+                  <br>
+                  <?php if (empty($row["newprice"])) { ?>
+                    <h2><sup>$</sup><em><?php echo $row["price"]; ?></em></h2>
+                  <?php } else { ?>
+                    <h2><del><sup>$</sup><?php echo $row["price"]; ?></del> <sup>$</sup><em><?php echo $row["newprice"]; ?></em></h2>
+                  <?php } ?>
+                </div>
+              </div>
+          <?php break;
+            }
+          } ?>
         </div>
-      </div>
+      <?php }  ?>
     </div>
   </section>
   <!-- ***** Call to Action End ***** -->
@@ -126,12 +165,41 @@
 
           <br>
         </div>
-
+        <?php
+        error_reporting(0);
+        if ($_POST["submit"]) {
+          // ID Seller
+          $sql = "SELECT seller_id FROM sellerproduct where product_id= $id;";
+          $kq = $mysqli->query($sql);
+          $sl = $kq->fetch_assoc();
+          $slid = $sl['seller_id'];
+          // Total Amount
+          $qa = $_POST['quantity'];
+          $sql1 = "SELECT price,newprice FROM product where product_id= $id;";
+          $pr = $mysqli->query($sql1);
+          $pri = $pr->fetch_assoc();
+          if (empty($pri['newprice'])) {
+            $total = $qa * $pri['price'];
+          } else {
+            $total = $qa * $pri['newprice'];
+          }
+          $date_array = getdate();
+          $date .= $date_array['year'] . "-";
+          $date .= "0" . $date_array['mon'] . "-";
+          $date .= $date_array['mday'];
+          $status = "pending";
+          // Insert data
+          $insert = "INSERT INTO Orders(user_id,product_id,seller_id,order_date,total_amount,pstatus,quantity) VALUES (1,$id,$slid,'$date',$total,'$status',$qa)";
+          $ins = $mysqli->query($insert);
+          echo "<script> swal('Thành công', 'Bạn đã thực hiện hành động thành công', 'success');</script>";
+        }
+        ?>
         <div class="col-md-4">
           <div class="contact-form">
-            <form action="#" id="contact">
+            <form action="#" id="contact" method="post">
               <div class="form-group">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi ratione molestias maxime odio!</p>
+                <h4><?php echo $row["product_name"]; ?></h4>
+                <p><?php echo $row["description"]; ?></p>
               </div>
 
               <label>Extra 1</label>
@@ -144,18 +212,20 @@
 
               <div class="row">
                 <div class="col-md-6">
-                  <label>Quantity</label>
-
-                  <input type="text" placeholder="1">
+                  <form action="" method="post">
+                    <label>Quantity</label>
+                    <input type="text" name="quantity">
+                    <input type="submit" name="submit" value="Submit">
+                  </form>
                 </div>
               </div>
 
               <div class="main-button">
-                <a href="checkout.php">Add to cart</a>
+                <a href="products.php">Back</a>
               </div>
             </form>
-          </div>
 
+          </div>
           <br>
         </div>
       </div>
