@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
 
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-
+    <link rel="stylesheet" href="./assets/css/pop_up.css">
     <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
@@ -370,7 +370,7 @@
 
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
-
+    <script src="./assets/js/pop_up.js"></script>
 </body>
 
 </html>
