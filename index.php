@@ -67,7 +67,7 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
-                            <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                            <li><button name="cart" type="submit" value=1> <i class="fa-solid fa-cart-shopping"></i></button></li>
                             <li><a href="user.php"><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
                         </ul>
                         <a class='menu-trigger'>

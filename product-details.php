@@ -27,6 +27,7 @@
             border-radius: 70%;
             width: 30px;
             height: 30px;
+           
         }
     </style>
 </head>
@@ -71,7 +72,7 @@
                 </div>
               </li>
               <li><a href="contact.php">Contact</a></li>
-              <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+              <li><a href="http://localhost:8080/project/Food_store_website/check_out/shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
               <li><a href=""><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
             </ul>
             <a class='menu-trigger'>
@@ -85,17 +86,10 @@
   </header>
   <!-- ***** Header Area End ***** -->
   <?php
+  session_start();
   $id = $_GET["id"];
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "food_store";
-  // Create connection
-  $mysqli = new mysqli($servername, $username, $password, $dbname);
-  if ($mysqli === false) {
-    die("ERROR: Could not connect. " . $mysqli->connect_error);
-  }
-
+  $_SESSION['orders'] = array();
+  include('C:\xampp\htdocs\project\Food_store_website\check_out\connectdb.php');
   $sql = "SELECT * FROM product;";
   $result = $mysqli->query($sql);
   ?>
@@ -119,6 +113,7 @@
                   <?php } ?>
                 </div>
               </div>
+              
           <?php break;
             }
           } ?>
@@ -134,9 +129,12 @@
       <br>
       <br>
 
+
+     
+
       <div class="row">
         <div class="col-md-8">
-          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <!-- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
               <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
               <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -161,38 +159,43 @@
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="sr-only">Next</span>
             </a>
-          </div>
+          </div>  -->
+          <img src="<?php echo $row["image_url"];?>" alt="">
 
           <br>
         </div>
         <?php
         error_reporting(0);
         if ($_POST["submit"]) {
-          // ID Seller
-          $sql = "SELECT seller_id FROM sellerproduct where product_id= $id;";
-          $kq = $mysqli->query($sql);
-          $sl = $kq->fetch_assoc();
-          $slid = $sl['seller_id'];
-          // Total Amount
+          // // ID Seller
+          // $sql = "SELECT seller_id FROM sellerproduct where product_id= $id;";
+          // $kq = $mysqli->query($sql);
+          // $sl = $kq->fetch_assoc();
+          // $slid = $sl['seller_id'];
+          // // Total Amount
           $qa = $_POST['quantity'];
-          $sql1 = "SELECT price,newprice FROM product where product_id= $id;";
-          $pr = $mysqli->query($sql1);
-          $pri = $pr->fetch_assoc();
-          if (empty($pri['newprice'])) {
-            $total = $qa * $pri['price'];
-          } else {
-            $total = $qa * $pri['newprice'];
-          }
-          $date_array = getdate();
-          $date .= $date_array['year'] . "-";
-          $date .= "0" . $date_array['mon'] . "-";
-          $date .= $date_array['mday'];
-          $status = "pending";
-          // Insert data
-          $insert = "INSERT INTO Orders(user_id,product_id,seller_id,order_date,total_amount,pstatus,quantity) VALUES (1,$id,$slid,'$date',$total,'$status',$qa)";
-          $ins = $mysqli->query($insert);
-          echo "<script> swal('Thành công', 'Bạn đã thực hiện hành động thành công', 'success');</script>";
+          // $sql1 = "SELECT price,newprice FROM product where product_id= $id;";
+          // $pr = $mysqli->query($sql1);
+          // $pri = $pr->fetch_assoc();
+          // if (empty($pri['newprice'])) {
+          //   $total = $qa * $pri['price'];
+          // } else {
+          //   $total = $qa * $pri['newprice'];
+          // }
+          // $date_array = getdate();
+          // $date .= $date_array['year'] . "-";
+          // $date .= "0" . $date_array['mon'] . "-";
+          // $date .= $date_array['mday'];
+          // $status = "pending";
+
+          $_SESSION['orders'] += array($id => $qa);
+
+          // // Insert data
+          // $insert = "INSERT INTO Orders(user_id,product_id,seller_id,order_date,total_amount,pstatus,quantity) VALUES (1,$id,$slid,'$date',$total,'$status',$qa)";
+          // $ins = $mysqli->query($insert);
+          echo "<script> swal('Thành công', 'Bạn đã thêm sản phẩm vào giỏ hàng', 'success');</script>";
         }
+        
         ?>
         <div class="col-md-4">
           <div class="contact-form">
@@ -202,20 +205,14 @@
                 <p><?php echo $row["description"]; ?></p>
               </div>
 
-              <label>Extra 1</label>
 
-              <select>
-                <option value="0">Extra A</option>
-                <option value="1">Extra B</option>
-                <option value="2">Extra C</option>
-              </select>
 
               <div class="row">
                 <div class="col-md-6">
                   <form action="" method="post">
                     <label>Quantity</label>
                     <input type="text" name="quantity">
-                    <input type="submit" name="submit" value="Submit">
+                    <input type="submit" name="submit" value="Submit" class="main-button">
                   </form>
                 </div>
               </div>

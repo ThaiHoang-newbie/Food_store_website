@@ -22,7 +22,7 @@
     <br>
     <div class="row">
         <?php 
-            include('connectdb.php');
+            include('../check_out/connectdb.php');
                 $sql = "SELECT * FROM User where user_id = 1 ;";
                 $result = $mysqli->query($sql);
                 if ($result->num_rows > 0) {

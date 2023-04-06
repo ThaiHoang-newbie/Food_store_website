@@ -50,15 +50,19 @@ session_start();
 $_SESSION['userid'] = 1;
 $userid = $_SESSION['userid'];
 $productid = array();
-$sql = "SELECT * FROM Orders where user_id = $userid and pstatus = 'pending'";
-$result = $mysqli->query($sql);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        if ($row['user_id'] == $userid) {
-            array_push($productid, $row['product_id']);
-        }
-    }
-}
+$check = "SELECT budget FROM user where user_id = $userid";
+$checking = $mysqli->query($check);
+$money = $checking->fetch_assoc();
+
+// $sql = "SELECT * FROM Orders where user_id = $userid and pstatus = 'pending'";
+// $result = $mysqli->query($sql);
+// if ($result->num_rows > 0) {
+//     while ($row = $result->fetch_assoc()) {
+//         if ($row['user_id'] == $userid) {
+//             array_push($productid, $row['product_id']);
+//         }
+//     }
+// }
 ?>
 
 <body>
@@ -82,11 +86,11 @@ if ($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>
-
                             <tr>
                                 <?php
+                                error_reporting(0);
                                 $totalprice = 0;
-                                foreach ($productid as $key) {
+                                foreach ($_SESSION['orders'] as $key => $value) {
                                     $sql = "SELECT * FROM Product where product_id = $key ;";
                                     $result = $mysqli->query($sql);
                                     if ($result->num_rows > 0) {
@@ -106,24 +110,26 @@ if ($result->num_rows > 0) {
                                             </td>
                                             <?php if (empty($row['newprice'])) { ?>
                                                 <td class="text-right font-weight-semibold align-middle p-4"><?php echo $row['price'] ?></td>
-                                            <?php } else { ?>
+                                            <?php $price = $value * $row['price'];
+                                            } else { ?>
                                                 <td class="text-right font-weight-semibold align-middle p-4"><?php echo $row['newprice'] ?></td>
-                                            <?php } ?>
-                                            <?php $ord = "SELECT * FROM orders where product_id =$key;";
+                                            <?php $price = $value * $row['newprice'];
+                                            } ?>
+                                            <?php $ord = "SELECT * FROM product where product_id =$key;";
                                             $kq = $mysqli->query($ord);
                                             if ($kq->num_rows > 0) {
                                                 $rows = $kq->fetch_assoc();
                                             ?>
 
-                                                <td class="align-middle p-4"><input type="text" class="form-control text-center" value="<?php echo $rows['quantity'] ?>"></td>
-                                                <td class="text-right font-weight-semibold align-middle p-4"><?php echo $rows['total_amount'] ?></td>
-                                            <?php $totalprice = $totalprice + $rows['total_amount'];
+                                                <td class="align-middle p-4"><input type="text" class="form-control text-center" value="<?php echo $value ?>"></td>
+                                                <td class="text-right font-weight-semibold align-middle p-4"><?php echo $price; ?></td>
+                                            <?php $totalprice = $totalprice + $price;
                                             } ?>
 
 
                                             <td class="text-center align-middle px-0">
                                                 <form method="POST" action="deletepd.php">
-                                                    <input type="hidden" name="id" value="<?php echo $rows['order_id']; ?>">
+                                                    <input type="hidden" name="id" value="<?php echo $key; ?>">
                                                     <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">X</button>
                                                 </form>
                                             </td>
@@ -155,16 +161,65 @@ if ($result->num_rows > 0) {
                 </div>
 
                 <div class="float-right">
-                    <a href="index.php"><button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3">Back to shopping</button></a>
-
-                   <button type="button" class="btn btn-lg btn-primary mt-2" onclick="checkout()">Checkout</button>
+                    <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="back_shopping()">Back to shopping</button>
                     <script>
+                        function back_shopping() {
+                            window.location = "../index.php";
+                        }
+
+                    </script>
+
+                    <button type="button" class="btn btn-lg btn-primary mt-2" onclick="checkout()">Checkout</button>
+                    <script>
+                        // function checkout() {
+                        //     // Hiển thị thông báo thành công
+
+                        //     <?php
+
+
+                                //     foreach ($_SESSION['orders'] as $key => $value) {
+
+                                //         //Date
+                                //         $date_array = getdate();
+                                //         $date .= $date_array['year'] . "-";
+                                //         $date .= "0" . $date_array['mon'] . "-";
+                                //         $date .= $date_array['mday'];
+                                //         $status = "pending";
+                                //         // $_SESSION['orders'] += array($id => $qa);
+
+                                //         // Insert data
+                                //         $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
+                                //         $ins = $mysqli->query($insert);
+                                //         // echo "<script> swal('Thành công', 'Bạn đã thực hiện hành động thành công', 'success');</script>";
+                                //         unset($_SESSION['orders'][$key]);
+                                //     }
+                                //     
+                                ?>
+                        //     swal("Thành công", "Bạn đã thực hiện hành động thành công", "success");
+                        // }
                         function checkout() {
-                            // Hiển thị thông báo thành công
-                            swal("Thành công", "Bạn đã thực hiện hành động thành công", "success");
+                            <?php
+                            foreach ($_SESSION['orders'] as $key => $value) {
+                                $date_array = getdate();
+                                $date .= $date_array['year'] . "-";
+                                $date .= "0" . $date_array['mon'] . "-";
+                                $date .= $date_array['mday'];
+                                $status = "pending";
+                                if ($money['budget'] < $totalprice) {
+                                    // Hiển thị thông báo lỗi
+                                    echo "<script> swal('Lỗi', 'Đã có lỗi xảy ra khi thực hiện hành động này', 'error');</script>";
+                                }else {
+                                    $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
+                                    $ins = $mysqli->query($insert);
+                                    if ($ins) {
+                                        unset($_SESSION['orders'][$key]);
+                                    }
+                                }
+                            }
+                            ?>
+                            swal("Thành công", "Bạn đã mua hàng thành công", "success");
                         }
                     </script>
-                    </form>
                 </div>
 
             </div>

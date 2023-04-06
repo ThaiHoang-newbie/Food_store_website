@@ -77,7 +77,7 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
-                            <li><a href="shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                            <li><a href="http://localhost:8080/project/Food_store_website/check_out/shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
                             <li><a href=""><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
                         </ul>
                         <a class='menu-trigger'>
@@ -154,8 +154,8 @@
                                     <p><?php echo $row["description"]; ?></p>
 
                                     <ul class="social-icons">
-                                        <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Details</a></li>
-                                        <li><a href="orders.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
+                                        <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
+                                        <!-- <li><a href="orders.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li> -->
                                     </ul>
                                 </div>
                             </div>
