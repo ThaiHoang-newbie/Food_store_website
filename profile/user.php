@@ -16,8 +16,8 @@
 <div class="container-xl px-4 mt-4">
     <!-- Account page navigation-->
     <nav class="nav nav-borders">
-        <a class="nav-link active ms-0" href="user.php" target="__blank">Profile</a>
-        <a class="nav-link" href="securityuser.php" target="__blank">Security</a>
+        <a class="nav-link active ms-0" onclick="window.location = '../profile/user.php'" target="__blank">Profile</a>
+        <a class="nav-link" onclick="window.location = '../securityuser/securityuser.php'" target="__blank">Security</a>
     </nav>
     <br>
     <div class="row">

@@ -160,72 +160,82 @@ $money = $checking->fetch_assoc();
                     </div>
                 </div>
 
-                <div class="float-right">
-                    <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="back_shopping()">Back to shopping</button>
-                    <script>
-                        function back_shopping() {
-                            window.location = "../index.php";
-                        }
+                <form action="" method="post">
+                    <div class="float-right">
 
-                    </script>
-
-                    <button type="button" class="btn btn-lg btn-primary mt-2" onclick="checkout()">Checkout</button>
-                    <script>
-                        // function checkout() {
-                        //     // Hiển thị thông báo thành công
-
-                        //     <?php
+                        <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="window.location = '../index.php'">Back to shopping</button>
 
 
-                                //     foreach ($_SESSION['orders'] as $key => $value) {
+                        <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout" onclick="checkout()">Checkout</button>
 
-                                //         //Date
-                                //         $date_array = getdate();
-                                //         $date .= $date_array['year'] . "-";
-                                //         $date .= "0" . $date_array['mon'] . "-";
-                                //         $date .= $date_array['mday'];
-                                //         $status = "pending";
-                                //         // $_SESSION['orders'] += array($id => $qa);
-
-                                //         // Insert data
-                                //         $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
-                                //         $ins = $mysqli->query($insert);
-                                //         // echo "<script> swal('Thành công', 'Bạn đã thực hiện hành động thành công', 'success');</script>";
-                                //         unset($_SESSION['orders'][$key]);
-                                //     }
-                                //     
-                                ?>
-                        //     swal("Thành công", "Bạn đã thực hiện hành động thành công", "success");
-                        // }
-                        function checkout() {
+                        <!--  
+                        <div id="popup-bill" style="display: none;">
                             <?php
-                            foreach ($_SESSION['orders'] as $key => $value) {
-                                $date_array = getdate();
-                                $date .= $date_array['year'] . "-";
-                                $date .= "0" . $date_array['mon'] . "-";
-                                $date .= $date_array['mday'];
-                                $status = "pending";
-                                if ($money['budget'] < $totalprice) {
-                                    // Hiển thị thông báo lỗi
-                                    echo "<script> swal('Lỗi', 'Đã có lỗi xảy ra khi thực hiện hành động này', 'error');</script>";
-                                }else {
-                                    $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
-                                    $ins = $mysqli->query($insert);
-                                    if ($ins) {
-                                        unset($_SESSION['orders'][$key]);
+                            $select = "SELECT * FROM user where user_id = $userid;";
+                            $show = $mysqli->query($select);
+                            $user = $show->fetch_assoc();
+                            ?>
+                            <h3>Đơn hàng của bạn</h3>
+                            <h6>Name: <?php echo $user['username']; ?></h6>
+                            <p>Phone Number : <?php echo $user['phone_number'] ?></p>
+                            <p>Address: <?php echo $user['address'] ?></p>
+                            <ul>
+                                <?php
+                                $search =  "SELECT * FROM orders where user_id = $userid;";
+                                $show = $mysqli->query($search);
+                                if ($show->num_rows > 0) {
+                                    while ($pro = $show->fetch_assoc()) {
+                                        $i = 1;
+                                        $proid = $pro['product_id'];
+                                        $sql = "SELECT * FROM product where product_id = $proid;";
+                                        $show = $mysqli->query($search);
+                                        $npro = $show->fetch_assoc();
+
+                                ?>
+                                        <li>Sản phẩm <?php echo $i; ?> : <?php echo $npro['product_name']; ?> - Số lượng : <?php echo $pro['quantity']; ?> - Giá : <?php echo $pro['total_amount']; ?></li>
+                                <?php }
+                                } ?>
+                                <li>Tổng giá : <?php echo $totalprice; ?></li>
+                            </ul>
+                        </div> -->
+                        <script>
+                            function checkout() {
+                                <?php
+                                if (isset($_POST['checkout'])) {
+                                    foreach ($_SESSION['orders'] as $key => $value) {
+                                        $date_array = getdate();
+                                        $date .= $date_array['year'] . "-";
+                                        $date .= "0" . $date_array['mon'] . "-";
+                                        $date .= $date_array['mday'];
+                                        $status = "pending";
+                                        if ($money['budget'] < $totalprice) {
+                                            // Hiển thị thông báo lỗi
+                                            echo "<script> swal('Lỗi', 'Bạn không đủ tiền để mua các món hàng này', 'error');</script>";
+                                        } else {
+                                            $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
+                                            $ins = $mysqli->query($insert);
+                                            if ($ins) {
+                                                unset($_SESSION['orders'][$key]);
+                                            }
+                                        }
                                     }
                                 }
+                                ?>
                             }
-                            ?>
-                            swal("Thành công", "Bạn đã mua hàng thành công", "success");
-                        }
-                    </script>
-                </div>
 
+
+                            const checkoutButton = document.getElementById('checkout');
+                            checkoutButton.addEventListener('click', function() {
+                                // Chuyển hướng đến trang thanh toán
+                                window.location.href = 'bill.php';
+                            });
+                        </script>
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-
 </body>
 
 </html>

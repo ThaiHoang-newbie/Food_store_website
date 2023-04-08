@@ -13,12 +13,13 @@
     <link rel="stylesheet" href="user.css">
     <link rel="stylesheet" href="securityuser.css">
 </head>
+
 <body>
-<div class="container-xl px-4 mt-4">
+    <div class="container-xl px-4 mt-4">
         <!-- Account page navigation-->
         <nav class="nav nav-borders">
-        <a class="nav-link " href="user.php" target="__blank">Profile</a>
-        <a class="nav-link active " href="securityuser.php" target="__blank">Security</a>
+            <a class="nav-link " onclick="window.location = '../profile/user.php'" target="__blank">Profile</a>
+            <a class="nav-link active ms-0" onclick="window.location = '../securityuser/securityuser.php'" target="__blank">Security</a>
         </nav>
         <hr class="mt-0 mb-4">
         <div class="row">

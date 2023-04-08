@@ -72,8 +72,8 @@
                 </div>
               </li>
               <li><a href="contact.php">Contact</a></li>
-              <li><a href="http://localhost:8080/project/Food_store_website/check_out/shoppingcart.php"><i class="fa-solid fa-cart-shopping"></i></a></li>
-              <li><a href=""><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
+              <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
+              <li><a onclick="window.location = '../Food_store_website/profile/user.php'"><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
             </ul>
             <a class='menu-trigger'>
               <span>Menu</span>
@@ -88,7 +88,6 @@
   <?php
   session_start();
   $id = $_GET["id"];
-  $_SESSION['orders'] = array();
   include('C:\xampp\htdocs\project\Food_store_website\check_out\connectdb.php');
   $sql = "SELECT * FROM product;";
   $result = $mysqli->query($sql);
@@ -160,8 +159,9 @@
               <span class="sr-only">Next</span>
             </a>
           </div>  -->
-          <img src="<?php echo $row["image_url"];?>" alt="">
-
+          <div style="position: relative; width: 100%; height: 100%;">
+          <img src="<?php echo $row["image_url"];?>" alt="" style="position: absolute; top: 50%; left: 50%; transform: translate(-25%, -50%);">
+          </div>
           <br>
         </div>
         <?php
