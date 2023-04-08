@@ -57,12 +57,12 @@
 
                                 <div class="form-group mb-3">
                                     <label for="">Password</label>
-                                    <input type="text" name="password" class="form-control" value="<?php echo $row['user_password']; ?>">
+                                    <input type="password" name="password" class="form-control" value="<?php echo $row['user_password']; ?>">
                                 </div>
 
                                 <div class="form-group mb-3">
                                     <label for="">Phone Number</label>
-                                    <input type="text" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
+                                    <input type="phone" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
                                 </div>
 
                                 <div class="form-group mb-3">
