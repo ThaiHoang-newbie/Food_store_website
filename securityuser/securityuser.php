@@ -48,7 +48,7 @@
                         </form>
                     </div>
                 </div>
- 
+
                 <!-- Delete account card-->
                 <div class="card mb-4">
                     <div class="card-header">Delete Account</div>
