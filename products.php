@@ -2,23 +2,6 @@
 <html lang="en">
 
 <head>
-    <style>
-        img {
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            padding: 5px;
-            width: 150px;
-            height: 150px;
-        }
-
-        #avt {
-            border-radius: 70%;
-            width: 30px;
-            height: 30px;
-        }
-
-    </style>
-    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -38,7 +21,6 @@
 </head>
 
 <body>
-
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
@@ -51,7 +33,6 @@
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
-
 
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
@@ -115,22 +96,10 @@
             <br>
             <br>
             <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "food_store";
-
-            // Create connection
-            $mysqli = new mysqli($servername, $username, $password, $dbname);
-            if ($mysqli === false) {
-                die("ERROR: Could not connect. " . $mysqli->connect_error);
-            }
-
+            include('../Food_store_website/check_out/connectdb.php');
             $sql = "SELECT * FROM product;";
             $result = $mysqli->query($sql);
-
             if ($result->num_rows > 0) {
-                // output data of each row
             ?>
                 <div class="row">
                     <?php while ($row = $result->fetch_assoc()) { ?>
@@ -155,7 +124,6 @@
 
                                     <ul class="social-icons">
                                         <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
-                                        <!-- <li><a href="orders.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li> -->
                                     </ul>
                                 </div>
                             </div>

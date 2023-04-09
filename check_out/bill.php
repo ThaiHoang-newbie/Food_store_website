@@ -5,9 +5,7 @@
     <title>Checkout Bill</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-
 <body>
-
     <div class="container">
         <h2 class="my-4">Checkout Bill</h2>
         <div class="row">
@@ -95,5 +93,4 @@
         });
     </script>
 </body>
-
 </html>
