@@ -5,16 +5,14 @@
     <title>Checkout Bill</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-
 <body>
-
     <div class="container">
         <h2 class="my-4">Checkout Bill</h2>
         <div class="row">
             <div class="col-md-6">
                 <?php
                 session_start();
-                $sql = "SELECT * FROM user where user_id =1;";
+                $sql = "SELECT * FROM user where user_id = 1;";
                 $result = $mysqli->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -91,7 +89,6 @@
     <script>
         const checkoutButton = document.getElementById('done');
         checkoutButton.addEventListener('click', function() {
-            // Chuyển hướng đến trang chủ
             window.location.href = 'http://localhost:8080/project/Food_store_website/index.php';
         });
     </script>

@@ -28,6 +28,7 @@ mysqli_stmt_bind_result($stmt, $money);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
 ?>
+?>
 <body>
     <div class="container px-3 my-5 clearfix">
         <div class="card">
@@ -115,6 +116,7 @@ mysqli_stmt_close($stmt);
                     <div class="float-right">
                         <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="window.location = '../index.php'">Back to shopping</button>
                         <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout" onclick="checkout()">Checkout</button>
+
                         <script>
                             function checkout() {
                                 <?php

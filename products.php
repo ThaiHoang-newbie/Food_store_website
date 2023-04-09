@@ -21,7 +21,6 @@
 </head>
 
 <body>
-
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
@@ -34,7 +33,6 @@
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
-
 
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
