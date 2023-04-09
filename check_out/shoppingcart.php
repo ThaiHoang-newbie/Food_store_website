@@ -8,7 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- -- SweetAlert  -->
+
     <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <title>Shopping Cart</title>
@@ -40,7 +40,7 @@
         }
     </style>
 
-    <!-- -- SweetAlert  -->
+
     <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -53,16 +53,6 @@ $productid = array();
 $check = "SELECT budget FROM user where user_id = $userid";
 $checking = $mysqli->query($check);
 $money = $checking->fetch_assoc();
-
-// $sql = "SELECT * FROM Orders where user_id = $userid and pstatus = 'pending'";
-// $result = $mysqli->query($sql);
-// if ($result->num_rows > 0) {
-//     while ($row = $result->fetch_assoc()) {
-//         if ($row['user_id'] == $userid) {
-//             array_push($productid, $row['product_id']);
-//         }
-//     }
-// }
 ?>
 
 <body>
@@ -95,7 +85,6 @@ $money = $checking->fetch_assoc();
                                     $result = $mysqli->query($sql);
                                     if ($result->num_rows > 0) {
                                         while ($row = $result->fetch_assoc()) {
-
                                 ?>
                                             <td class="p-4">
                                                 <div class="media align-items-center">
@@ -164,40 +153,8 @@ $money = $checking->fetch_assoc();
                     <div class="float-right">
 
                         <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="window.location = '../index.php'">Back to shopping</button>
-
-
                         <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout" onclick="checkout()">Checkout</button>
 
-                        <!--  
-                        <div id="popup-bill" style="display: none;">
-                            <?php
-                            $select = "SELECT * FROM user where user_id = $userid;";
-                            $show = $mysqli->query($select);
-                            $user = $show->fetch_assoc();
-                            ?>
-                            <h3>Đơn hàng của bạn</h3>
-                            <h6>Name: <?php echo $user['username']; ?></h6>
-                            <p>Phone Number : <?php echo $user['phone_number'] ?></p>
-                            <p>Address: <?php echo $user['address'] ?></p>
-                            <ul>
-                                <?php
-                                $search =  "SELECT * FROM orders where user_id = $userid;";
-                                $show = $mysqli->query($search);
-                                if ($show->num_rows > 0) {
-                                    while ($pro = $show->fetch_assoc()) {
-                                        $i = 1;
-                                        $proid = $pro['product_id'];
-                                        $sql = "SELECT * FROM product where product_id = $proid;";
-                                        $show = $mysqli->query($search);
-                                        $npro = $show->fetch_assoc();
-
-                                ?>
-                                        <li>Sản phẩm <?php echo $i; ?> : <?php echo $npro['product_name']; ?> - Số lượng : <?php echo $pro['quantity']; ?> - Giá : <?php echo $pro['total_amount']; ?></li>
-                                <?php }
-                                } ?>
-                                <li>Tổng giá : <?php echo $totalprice; ?></li>
-                            </ul>
-                        </div> -->
                         <script>
                             function checkout() {
                                 <?php
@@ -226,7 +183,6 @@ $money = $checking->fetch_assoc();
 
                             const checkoutButton = document.getElementById('checkout');
                             checkoutButton.addEventListener('click', function() {
-                                // Chuyển hướng đến trang thanh toán
                                 window.location.href = 'bill.php';
                             });
                         </script>

@@ -14,7 +14,7 @@
             <div class="col-md-6">
                 <?php
                 session_start();
-                $sql = "SELECT * FROM user where user_id =1;";
+                $sql = "SELECT * FROM user where user_id = 1;";
                 $result = $mysqli->query($sql);
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
@@ -91,37 +91,9 @@
     <script>
         const checkoutButton = document.getElementById('done');
         checkoutButton.addEventListener('click', function() {
-            // Chuyển hướng đến trang chủ
             window.location.href = 'http://localhost:8080/project/Food_store_website/index.php';
         });
     </script>
-    <!-- <script>
-      // Lấy thông tin từ localStorage
-      let name = localStorage.getItem("name");
-      let address = localStorage.getItem("address");
-      let city = localStorage.getItem("city");
-      let state = localStorage.getItem("state");
-      let zip = localStorage.getItem("zip");
-      let cart = JSON.parse(localStorage.getItem("cart"));
-      let total = localStorage.getItem("total");
-
-      // Hiển thị thông tin lên bill
-      document.getElementById("name").innerHTML = name;
-      document.getElementById("address").innerHTML = address;
-      document.getElementById("city").innerHTML = city;
-      document.getElementById("state").innerHTML = state;
-      document.getElementById("zip").innerHTML = zip;
-
-      let cartHtml = "";
-      for (let i = 0; i < cart.length; i++) {
-        let product = cart[i];
-        let subtotal = product.price * product.quantity;
-        cartHtml += "<tr><td>" + product.name + "</td><td>$" + product.price.toFixed(2) + "</td><td>" + product.quantity + "</td><td>$" + subtotal.toFixed(2) + "</td></tr>";
-      }
-      document.getElementById("cart").innerHTML = cartHtml;
-
-      document.getElementById("total").innerHTML = total;
-    </script> -->
 </body>
 
 </html>
