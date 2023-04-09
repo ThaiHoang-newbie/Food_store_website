@@ -40,7 +40,6 @@
         }
     </style>
 
-
     <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -127,7 +126,6 @@ $money = $checking->fetch_assoc();
                 <?php }
                                     }
                                 } ?>
-
 
 
                         </tbody>
