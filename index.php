@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +21,15 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        #avt {
+            border-radius: 70%;
+            width: 30px;
+            height: 30px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 
 <body>
@@ -48,7 +61,6 @@
                         <ul class="nav">
                             <li><a href="index.php">Home</a></li>
                             <li><a href="products.php">Products</a></li>
-                            <li><a href="checkout.php">Checkout</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
@@ -60,6 +72,28 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
+                            <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                            <li class="avt">
+                                <?php // Avatar
+                                if (isset($_SESSION['email_user'])) {
+                                    require('./Sign_up/connect_db.php');
+                                    $email_user = $_SESSION['email_user'];
+                                    $select_avt = "SELECT `avatar` FROM `user` WHERE `email` = '$email_user'";
+                                    $result = mysqli_query($conn, $select_avt);
+                                    while ($row = mysqli_fetch_assoc($result)) { ?>
+                                        <img onclick="dir_infor()" src="
+                                        
+                                        <?php if ($row['avatar'] == null) { // Don't have any avt
+                                            echo "https://iphonecugiare.com/wp-content/uploads/2020/03/84156601_1148106832202066_479016465572298752_o.jpg";
+                                        } else { // User's avatar
+                                            echo $row['avatar'];
+                                        }
+                                        ?>" id="avt" alt="Avatar">
+                                <?php }
+                                }
+                                ?>
+                            </li>
+
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -367,7 +401,7 @@
     <script src="assets/js/imgfix.min.js"></script>
     <script src="assets/js/mixitup.js"></script>
     <script src="assets/js/accordions.js"></script>
-
+    <script src="./assets/js/dir_infor.js"></script>
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
 
