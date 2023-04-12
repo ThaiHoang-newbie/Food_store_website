@@ -28,7 +28,6 @@ mysqli_stmt_bind_result($stmt, $money);
 mysqli_stmt_fetch($stmt);
 mysqli_stmt_close($stmt);
 ?>
-?>
 <body>
     <div class="container px-3 my-5 clearfix">
         <div class="card">

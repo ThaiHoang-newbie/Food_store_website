@@ -118,7 +118,7 @@ session_start();
         echo "<script>alert('Wrong password')</script>";
       }
     } else {
-      echo "<script>alert('User does not exist')</script>";
+      echo "<script>alert('You must register first')</script>";
     }
   }
   ?>

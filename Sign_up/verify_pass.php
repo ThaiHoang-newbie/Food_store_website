@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/verify_pass.css">
+    <link rel="stylesheet" href="../assets/css/verify_pass.css">
 </head>
 
 
@@ -139,8 +139,12 @@
 
         if ($row = mysqli_fetch_assoc($conn_user_pass)) {
             if ($variableName == $row['user_password']) {
-                header('Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php');
-                exit();
+                echo "<script>alert('Verify email successfull')</script>";
+                echo "<script>
+                    setTimeout(function(){
+                        window.location.href = 'http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php';
+                    }, 1000);
+                </script>";
             } else if ($variableName == null) {
             } else {
                 echo "<script>alert('Password incorrect')</script>";
@@ -148,6 +152,8 @@
         } else {
             echo "<script>alert('User not found')</script>";
         }
+        
+
 
         ?>
 
@@ -158,7 +164,7 @@
     <script src="../assets/js/verify_pass.js">
     </script>
 
-    
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>

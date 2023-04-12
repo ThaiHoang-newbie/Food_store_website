@@ -59,8 +59,7 @@
                             </li>
                             <li><a href="contact.php">Contact</a></li>
                             <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                            <li><a onclick="window.location = '../Food_store_website/profile/user.php'"><img src="https://haycafe.vn/wp-content/uploads/2022/02/Hi%CC%80nh-avatar-trang-ne%CC%80n-den.jpg" alt="" id="avt"></a></li>
-                        </ul>
+                          
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
