@@ -279,7 +279,7 @@ table.table .avatar {
 						<td><img src="<?php echo $row['image_url']?>" alt="" style=" height: 120px;  width: 150px;"></td>
 						<td>
 							
-						<a data-target="#editEmployeeModal" 	class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+						<a data-target="#editEmployeeModal" data-id="<?php echo $row['product_id']?>"	class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 
 						<a href="delete.php?sid=<?php echo $row['product_id']?>" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
