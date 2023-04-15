@@ -2,6 +2,73 @@
 session_start();
 ?>
 
+<?php // Update infor
+if (isset($_POST['save_btn'])) {
+    $current_pass = $_POST['current_pass'];
+    $new_pass = $_POST['new_pass'];
+    $confirm_pass = $_POST['confirm_pass'];
+    $email_user = $_SESSION['email_user'];
+
+    include("../Sign_up/connect_db.php");
+
+    $select_query = "SELECT user_password FROM user WHERE email = '$email_user'";
+    $result = mysqli_query($conn, $select_query);
+    $user = mysqli_fetch_assoc($result);
+
+    if (!empty($user) && isset($user['user_password']) && $current_pass === $user['user_password']) {
+        if ($new_pass === $confirm_pass) {
+            $update_query = "UPDATE user SET user_password = '$new_pass' WHERE email = '$email_user'";
+            mysqli_query($conn, $update_query);
+            echo "<script>alert('Update password successful')</script>";
+            header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+        } else {
+            echo "<script>alert('Wrong confirm password')</script>";
+        }
+    } else {
+        echo "<script>alert('Wrong current password')</script>";
+    }
+}
+?>
+
+
+<?php // Register as a seller
+if (isset($_POST['seller_btn'])) {
+    $email_user = $_SESSION['email_user'];
+    include("../Sign_up/connect_db.php");
+    $select_query = "UPDATE user SET user_type = 'seller' WHERE email = '$email_user'";
+    $result = mysqli_query($conn, $select_query);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        echo "<script>alert('Register successful')</script>";
+        header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+    } else {
+        echo "<script>alert('You already as a seller')</script>";
+    }
+}
+?>
+
+
+<?php // Delete account
+if (isset($_POST['delete_btn'])) {
+
+    $email_user = $_SESSION['email_user'];
+
+    include("../Sign_up/connect_db.php");
+    $select_query = "DELETE FROM user WHERE email = '$email_user'";
+    $result = mysqli_query($conn, $select_query);
+
+    if (mysqli_affected_rows($conn) > 0) {
+        unset($_SESSION['email_user']);
+        echo "<script>alert('Delete successful')</script>";
+        header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+    } else {
+        echo "<script>alert('Delete failed')</script>";
+    }
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -67,57 +134,19 @@ session_start();
 
 
 
-
-                <?php
-                if (isset($_POST['save_btn'])) {
-                    $current_pass = $_POST['current_pass'];
-                    $new_pass = $_POST['new_pass'];
-                    $confirm_pass = $_POST['confirm_pass'];
-                    $email_user = $_SESSION['email_user'];
-
-                    include("../Sign_up/connect_db.php");
-
-                    $select_query = "SELECT user_password FROM user WHERE email = '$email_user'";
-                    $result = mysqli_query($conn, $select_query);
-                    $user = mysqli_fetch_assoc($result);
-
-                    if (!empty($user) && isset($user['user_password']) && $current_pass === $user['user_password']) {
-                        if ($new_pass === $confirm_pass) {
-                            $update_query = "UPDATE user SET user_password = '$new_pass' WHERE email = '$email_user'";
-                            mysqli_query($conn, $update_query);
-                            echo "<script>alert('Update password successful')</script>";
-                        } else {
-                            echo "<script>alert('Wrong confirm password')</script>";
-                        }
-                    } else {
-                        echo "<script>alert('Wrong current password')</script>";
-                    }
-                }
-                ?>
+                <div class="card mb-4">
+                    <form action="" method="POST">
+                        <div class="card-header">Register as a seller</div>
+                        <div class="card-body">
+                            <p>By registering as a seller for Food Store Website, you can sell your products Food Store Website customers.</p>
+                            <p>After as a seller, You can not register as a customer</p>
+                            <button class="btn btn-danger-soft text-warning" name="seller_btn" type="submit">Register now</button>
+                        </div>
+                    </form>
+                </div>
 
 
 
-
-
-                <?php
-                if (isset($_POST['delete_btn'])) {
-
-                    $email_user = $_SESSION['email_user'];
-
-                    include("../Sign_up/connect_db.php");
-                    $select_query = "DELETE FROM user WHERE email = '$email_user'";
-                    $result = mysqli_query($conn, $select_query);
-
-                    if (mysqli_affected_rows($conn) > 0) {
-                        echo "<script>alert('Delete successful')</script>";
-                        header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
-                    } else {
-                        echo "<script>alert('Delete failed')</script>";
-                    }
-                }
-                ?>
-
-                <!-- Delete account card-->
                 <div class="card mb-4">
                     <form action="" method="POST">
                         <div class="card-header">Delete Account</div>
@@ -127,6 +156,8 @@ session_start();
                         </div>
                     </form>
                 </div>
+
+
 
             </div>
         </div>

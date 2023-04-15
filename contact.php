@@ -104,7 +104,7 @@
             <i class="fa fa-phone"></i>
           </div>
 
-          <h5><a href="#">0123 456 789</a></h5>
+          <h5><a href="#">+84 236 3888 503</a></h5>
 
           <br>                                                                                                                                      
         </div>
@@ -114,7 +114,7 @@
             <i class="fa fa-envelope"></i>
           </div>
 
-          <h5><a href="#">PNV@gmail.com</a></h5>
+          <h5><a href="#"> info.vietnam@passerellesnumeriques.org</a></h5>
 
           <br>
         </div>
@@ -124,7 +124,7 @@
             <i class="fa fa-map-marker"></i>
           </div>
 
-          <h5>101B Le Huu Trac street, Da Nang city</h5>
+          <h5>99 To Hien Thanh</h5>
 
           <br>
         </div>
@@ -139,7 +139,7 @@
       <div class="row">
         <div class="col-lg-6 col-md-6 col-xs-12">
           <div id="map">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d878.9702855808808!2d108.24095370203649!3d16.060566544772243!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1678754459265!5m2!1svi!2s" width="100%" height="600px" frameborder="0" style="border:0" allowfullscreen></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3834.1103361795954!2d108.24107707381593!3d16.0597631896939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3142177f2ced6d8b%3A0xeac35f2960ca74a4!2zOTkgVMO0IEhp4bq_biBUaMOgbmgsIFBoxrDhu5tjIE3hu7ksIFPGoW4gVHLDoCwgxJDDoCBO4bq1bmcgNTUwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1681523158868!5m2!1svi!2s" width="100%" height="600px" frameborder="0" style="border:0" allowfullscreen></iframe>
           </div>
         </div>
         <div class="col-lg-6 col-md-6 col-xs-12">

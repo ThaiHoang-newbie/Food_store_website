@@ -81,7 +81,6 @@ session_start();
                                 }
                                 var img = document.querySelector("avt");
                                 img.addEventListener("click", dir_infor);
-
                             </script>
 
                             <li class="avt">
@@ -89,18 +88,21 @@ session_start();
                                 if (isset($_SESSION['email_user'])) {
                                     require('./Sign_up/connect_db.php');
                                     $email_user = $_SESSION['email_user'];
+
                                     $select_avt = "SELECT `avatar` FROM `user` WHERE `email` = '$email_user'";
                                     $result = mysqli_query($conn, $select_avt);
                                     $_SESSION['email_user'] = $email_user;
                                     while ($row = mysqli_fetch_assoc($result)) { ?>
-                                    <img onclick="dir_infor()"
-                                        src=" <?php if ($row['avatar'] == null) { // Don't have any avt
-                                                    echo "https://iphonecugiare.com/wp-content/uploads/2020/03/84156601_1148106832202066_479016465572298752_o.jpg";
-                                                } else { // User's avatar
-                                                    echo $row['avatar'];
-                                                }
-                                                ?>" id="avt" alt="Avatar">
-                                <?php }
+                                        <img onclick="dir_infor()" src=" <?php if ($row['avatar'] == null) { // Don't have any avt
+                                                                                echo "https://iphonecugiare.com/wp-content/uploads/2020/03/84156601_1148106832202066_479016465572298752_o.jpg";
+                                                                            } else { // User's avatar
+                                                                                echo $row['avatar'];
+                                                                            }
+                                                                            ?>" id="avt" alt="Avatar">
+
+
+                                <?php
+                                    }
                                 }
                                 ?>
                             </li>

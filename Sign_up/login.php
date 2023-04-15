@@ -32,16 +32,16 @@ session_start();
         <div class="form-item">
           <span class="form-item-icon material-symbols-rounded">mail</span>
           <input type="text" placeholder="Enter Email" id="emailForm" name="email" autofocus required>
-
         </div>
+
         <div class="form-item">
           <span class="form-item-icon material-symbols-rounded">lock</span>
           <input type="password" placeholder="Enter Password" id="passwordForm" name="password" required>
-
         </div>
+
         <div class="form-item-other">
           <div class="checkbox">
-            <input type="checkbox" id="rememberMeCheckbox" checked>
+            <input type="checkbox" name="rememberme" id="rememberMeCheckbox" checked>
             <label for="rememberMeCheckbox">Remember me</label>
           </div>
 
@@ -56,39 +56,17 @@ session_start();
       </div>
 
     </div>
-
-
-    <div class="login-card-social">
-      <div>Other Sign-In Options</div>
-      <div class="login-card-social-btns">
-        <a href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-facebook" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"></path>
-          </svg>
-
-        </a>
-        <a href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-google" width="24" height="24" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path>
-          </svg>
-
-        </a>
-      </div>
-    </div>
+  </div>
   </div>
 
   <?php
   // Login
 
-  // Login
 
   if (isset($_POST['btn-login'])) {
     include('../Sign_up/connect_db.php');
     $email_input = $_POST['email'];
     $password_input = $_POST['password'];
-
 
     // Prevent MySQL injection
     $select_log_user_email = "SELECT `email` FROM `user` WHERE `email` = ?";
@@ -99,7 +77,6 @@ session_start();
     $e_fetch = mysqli_stmt_fetch($stmt_email);
 
 
-
     $select_log_user_pass = "SELECT `user_password` FROM `user` WHERE `user_password` = ?";
     $stmt_pass = mysqli_prepare($conn, $select_log_user_pass);
     mysqli_stmt_bind_param($stmt_pass, "s", $password_input);
@@ -108,11 +85,9 @@ session_start();
     $p_fetch = mysqli_stmt_fetch($stmt_pass);
 
 
-
     if (!empty($e_fetch)) {
       if (!empty($p_fetch)) {
         $_SESSION['email_user'] = $email_input;
-        $_SESSION['password_user'] = $password_input;
         header("Location: http://localhost/Food_store_website/");
       } else {
         echo "<script>alert('Wrong password')</script>";
@@ -121,7 +96,13 @@ session_start();
       echo "<script>alert('You must register first')</script>";
     }
   }
+  1
+
   ?>
+
+
+
+
 </body>
 
 </html>

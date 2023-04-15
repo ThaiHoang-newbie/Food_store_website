@@ -51,7 +51,7 @@
 
                                 <div class="form-group mb-3">
                                     <label for="">Phone Number</label>
-                                    <input type="phone" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
+                                    <input type="tel" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
                                 </div>
 
                                 <div class="form-group mb-3">
