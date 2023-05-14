@@ -148,40 +148,32 @@ session_start();
                     </div>
                 </div>
             </div>
+
             <div class="row">
-                <div class="col-lg-4">
+                <?php
+                   require_once('connect.php');
+                   $sql = "SELECT * FROM product LIMIT 3";
+                   $result = mysqli_query($conn, $sql);
+                   
+                   while($row = mysqli_fetch_assoc($result)){
+                    ?>
+                    
+                    <div class="col-lg-4">
                     <div class="trainer-item">
                         <div class="image-thumb">
-                            <img src="assets/images/product-4-720x480.jpg" alt="">
+                            <img src="<?php echo $row['image_url']?>" alt="">
                         </div>
                         <div class="down-content">
                             <span>
-                                <del><sup>$</sup>15.00</del> <sup>$</sup>10.00
+                                <del><sup>$</sup><?php echo $row['price']?></del> <sup>$</sup><?php echo $row['Newprice']?>
+              
+              
+              
                             </span>
 
-                            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing.</h4>
+                            <h4><?php echo $row['product_name']?></h4>
 
-                            <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-
-                            <ul class="social-icons">
-                                <li><a href="product-details.php">+ View More</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/product-5-720x480.jpg" alt="">
-                        </div>
-                        <div class="down-content">
-                            <span>
-                                <del><sup>$</sup>15.00</del> <sup>$</sup>10.00
-                            </span>
-
-                            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing.</h4>
-
-                            <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
+                            <p><?php echo $row['description']?></p>
 
                             <ul class="social-icons">
                                 <li><a href="product-details.php">+ View More</a></li>
