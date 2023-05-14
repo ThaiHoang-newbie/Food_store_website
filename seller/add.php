@@ -9,7 +9,6 @@ if (isset($_POST['Add'])) {
 
     include('../connect.php');
 
-
     $sql="INSERT INTO product (product_name,description,price,newprice,image_url)
     VALUES (' $Product_Name', ' $Description','$Price','$New_price',' $image')";
     mysqli_query($conn, $sql);
