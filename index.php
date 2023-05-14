@@ -120,6 +120,9 @@
                         <div class="down-content">
                             <span>
                                 <del><sup>$</sup><?php echo $row['price']?></del> <sup>$</sup><?php echo $row['Newprice']?>
+              
+              
+              
                             </span>
 
                             <h4><?php echo $row['product_name']?></h4>
