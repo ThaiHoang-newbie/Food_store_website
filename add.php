@@ -7,10 +7,11 @@ if (isset($_POST['Add'])) {
     $New_price=$_POST['New_price'];
     $image=$_POST['image'];
 
-    include('../connect.php');
+    include('connect.php');
 
     $sql="INSERT INTO product (product_name,description,price,newprice,image_url)
     VALUES (' $Product_Name', ' $Description','$Price','$New_price',' $image')";
     mysqli_query($conn, $sql);
-    header('Location: http://localhost/Food_store_website/seller/Adminseller.php');
+    
+    header('Location: http://localhost/TamPHP/FinalPHP/Food_store_website/adminseller.php');
 }

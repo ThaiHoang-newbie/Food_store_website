@@ -11,7 +11,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="../assets/css/admin_seller.css">
+<link rel="stylesheet" href="assets/css/admin_seller.css">
 
 </head>
 <body>
@@ -41,7 +41,7 @@
 					
 				<tbody>
 				<?php
-				include('../connect.php');
+				include('connect.php');
 				$sql="SELECT*FROM `product`";
 				$result = mysqli_query($conn, $sql);
 				while($row = mysqli_fetch_assoc($result)){
@@ -122,7 +122,7 @@
                     <input type="hidden" id="pro_id" value="" />
                     <div class="form-group">
                         <label>Product_Name</label>
-                        <input type="text" name="pro_name" class="form-control"  value="" required>
+                        <input type="text" name="pro_name" id="pro_name" class="form-control"  value="" required>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
@@ -152,23 +152,25 @@
 
 </body>
 <script>
-	$(document).ready(function(){
-		$(document).on('click','a[data-role=update]',function(){
-		  var id =$(this).data('id');
-		  var product_name = $('#'+id).children('td[data-target=product_name]').text();
-		  var description = $('#'+id).children('td[data-target=description]').text();
-		  var price = $('#'+id).children('td[data-target=price]').text();
-		  var Newprice = $('#'+id).children('td[data-target=Newprice]').text();
-		  var image_url= $('#'+id).children('td[data-target=image_url]').text();
+	$(document).ready(function() {
+  		$(document).on('click', 'a[data-role=update]', function() {
+		var id = $(this).data('id');
+		var product_name = $('#' + id).children('td[data-target=product_name]').text();
+		var description = $('#' + id).children('td[data-target=description]').text();
+		var price = $('#' + id).children('td[data-target=price]').text();
+		var new_price = $('#' + id).children('td[data-target=Newprice]').text();
+		var image_url = $('#' + id).children('td[data-target=image_url]').find('img').attr('src');
 
-		  $('#pro_name').val(product_name);
-		  $('#Description').val(description);
-		  $('#Price').val(price);	
-		  $('#New_price').val(Newprice);
-		  $('#image').val(image_url);
-		  $('#pro_id').val(id);
-		  $('#editEmployeeModal').modal('toggle');
-		});
+   		$('#pro_name').val(product_name);
+		$('#Description').val(description);
+		$('#Price').val(price);	
+		$('#New_price').val(new_price);
+		$('#image').val(image_url);
+		$('#pro_id').val(id);
+		$('#editEmployeeModal').modal('toggle');
+	
+});
+
 
 		$('#Edit').click(function(){
 			var id = $('#pro_id').val();
