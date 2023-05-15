@@ -2,11 +2,11 @@
 // Kết nối database
 include_once 'connect.php';
 
-if(isset($_POST['Edit'])) {  
-    echo 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';  
-    echo $product_id = $_POST['id'];
+if($_SERVER['REQUEST_METHOD'] === 'POST') {  
+   
+    $product_id = $_POST['id'];
     $pro_name = $_POST['product_name'];
-    $Description = $_POST['description'];
+    $Description = $_POST['decscripton'];
     $Price = $_POST['price'];
     $New_price = $_POST['New_price'];
     $image = $_POST['image'];
@@ -15,12 +15,9 @@ if(isset($_POST['Edit'])) {
 
     // Cập nhật thông tin sản phẩm vào CSDL
     $sql = "UPDATE product SET product_name='$pro_name', description='$Description', price='$Price', Newprice='$New_price', image_url='$image' WHERE product_id=$product_id";
-    if(mysqli_query($conn, $sql)) {
+    mysqli_query($conn, $sql);
         // Nếu cập nhật thành công, chuyển hướng về trang danh sách sản phẩm
+    header('Location:  http://localhost/TamPHP/FinalPHP/Food_store_website/adminseller.php');
 
-    } else {
-        // Nếu cập nhật thất bại, thông báo lỗi
-        echo "Error updating record: " . mysqli_error($conn);
-    }
 }
 ?>
