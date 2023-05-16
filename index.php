@@ -50,71 +50,7 @@ session_start();
 
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.php" class="logo">Food Store <em> Website</em></a>
-                        <!-- ***** Logo End ***** -->
-
-
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li><a href="index.php">Home</a></li>
-                            <li><a href="products.php">Products</a></li>
-                            <li class="dropdown">
-                                <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item active" href="about.php">About Us</a>
-                                    <a class="dropdown-item" href="blog.php">Blog</a>
-                                    <a class="dropdown-item" href="testimonials.php">Testimonials</a>
-                                    <a class="dropdown-item" href="terms.php">Terms</a>
-                                </div>
-                            </li>
-                            <li><a href="contact.php">Contact</a></li>
-                            <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                            <script>
-                                function dir_infor() {
-                                    window.location.href = "http://localhost/Food_store_website/profile/user.php";
-                                }
-                                var img = document.querySelector("avt");
-                                img.addEventListener("click", dir_infor);
-                            </script>
-
-                            <li class="avt">
-                                <?php // Avatar
-                                if (isset($_SESSION['email_user'])) {
-                                    require('./Sign_up/connect_db.php');
-                                    $email_user = $_SESSION['email_user'];
-
-                                    $select_avt = "SELECT `avatar` FROM `user` WHERE `email` = '$email_user'";
-                                    $result = mysqli_query($conn, $select_avt);
-                                    $_SESSION['email_user'] = $email_user;
-                                    while ($row = mysqli_fetch_assoc($result)) { ?>
-                                        <img onclick="dir_infor()" src=" <?php if ($row['avatar'] == null) { // Don't have any avt
-                                                                                echo "https://iphonecugiare.com/wp-content/uploads/2020/03/84156601_1148106832202066_479016465572298752_o.jpg";
-                                                                            } else { // User's avatar
-                                                                                echo $row['avatar'];
-                                                                            }
-                                                                            ?>" id="avt" alt="Avatar">
-
-
-                                <?php
-                                    }
-                                }
-                                ?>
-                            </li>
-                        </ul>
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
+        <?php require_once('./part/header.php'); ?>
     </header>
     <!-- ***** Header Area End ***** -->
 
@@ -151,56 +87,33 @@ session_start();
 
             <div class="row">
                 <?php
-                   require_once('connect.php');
-                   $sql = "SELECT * FROM product LIMIT 3";
-                   $result = mysqli_query($conn, $sql);
-                   
-                   while($row = mysqli_fetch_assoc($result)){
-                    ?>
-                    
+                require_once('connect.php');
+                $sql = "SELECT * FROM product LIMIT 3";
+                $result = mysqli_query($conn, $sql);
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                ?>
+
+
+
                     <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="<?php echo $row['image_url']?>" alt="">
-                        </div>
-                        <div class="down-content">
-                            <span>
-                                <del><sup>$</sup><?php echo $row['price']?></del> <sup>$</sup><?php echo $row['Newprice']?>
-              
-              
-              
-                            </span>
-
-                            <h4><?php echo $row['product_name']?></h4>
-
-                            <p><?php echo $row['description']?></p>
-
-                            <ul class="social-icons">
-                                <li><a href="product-details.php">+ View More</a></li>
-                            </ul>
+                        <div class="trainer-item">
+                            <div class="image-thumb">
+                                <img src="<?php echo $row['image_url'] ?>" alt="">
+                            </div>
+                            <div class="down-content">
+                                <span>
+                                    <del><sup>$</sup><?php echo $row['price'] ?></del> <sup>$</sup><?php echo $row['newprice'] ?>
+                                </span>
+                                <h4><?php echo $row['product_name'] ?></h4>
+                                <p><?php echo $row['description'] ?></p>
+                                <ul class="social-icons">
+                                    <li><a href="./product-details.php">+ View More</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/product-6-720x480.jpg" alt="">
-                        </div>
-                        <div class="down-content">
-                            <span>
-                                <del><sup>$</sup>15.00</del> <sup>$</sup>10.00
-                            </span>
-
-                            <h4>Lorem ipsum dolor sit amet, consectetur adipisicing.</h4>
-
-                            <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-
-                            <ul class="social-icons">
-                                <li><a href="./product-details.php">+ View More</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
 
             <br>

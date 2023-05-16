@@ -61,6 +61,7 @@ session_start();
                                     <div class="font-italic text-muted mb-4"><b>Email: </b><?php echo $row['email'] ?></div>
                                     <div class="font-italic text-muted mb-4"><b>Phone Number: </b><?php echo $row['phone_number'] ?></div>
                                     <div class="font-italic text-muted mb-4"><b>Address: </b><?php echo $row['address'] ?></div>
+                                    <div class="font-italic text-muted mb-4"><b>User type: </b><?php echo $row['user_type'] ?></div>
                                     <button class="btn btn-primary" type="button" onclick="dir_infor()">Edit Profile</button>
                                 </div>
                             </div>

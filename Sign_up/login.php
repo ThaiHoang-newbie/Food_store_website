@@ -85,10 +85,24 @@ session_start();
     $p_fetch = mysqli_stmt_fetch($stmt_pass);
 
 
+
     if (!empty($e_fetch)) {
       if (!empty($p_fetch)) {
-        $_SESSION['email_user'] = $email_input;
-        header("Location: http://localhost/Food_store_website/");
+
+        include('./connect.php');
+
+        $select_id = "SELECT `user_id` FROM `user` WHERE `user_password` = ? AND `email` = ?";
+        $stmt_id = mysqli_prepare($conn, $select_id);
+        mysqli_stmt_bind_param($stmt_id, "ss", $password_input, $email_input);
+        mysqli_stmt_execute($stmt_id);
+        mysqli_stmt_bind_result($stmt_id, $id_fetch);
+
+        if (mysqli_stmt_fetch($stmt_id) > 0) {
+          $_SESSION['id_user'] = $id_fetch;
+          $_SESSION['email_user'] = $email_input;
+          header("Location: http://localhost/Food_store_website/");
+        } else {
+        }
       } else {
         echo "<script>alert('Wrong password')</script>";
       }
@@ -96,10 +110,8 @@ session_start();
       echo "<script>alert('You must register first')</script>";
     }
   }
-  1
 
   ?>
-
 
 
 

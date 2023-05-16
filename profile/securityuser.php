@@ -1,8 +1,6 @@
 <?php
 session_start();
-?>
 
-<?php // Update infor
 if (isset($_POST['save_btn'])) {
     $current_pass = $_POST['current_pass'];
     $new_pass = $_POST['new_pass'];
@@ -11,16 +9,25 @@ if (isset($_POST['save_btn'])) {
 
     include("../Sign_up/connect_db.php");
 
-    $select_query = "SELECT user_password FROM user WHERE email = '$email_user'";
-    $result = mysqli_query($conn, $select_query);
+    $select_query = "SELECT user_password FROM user WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $select_query);
+    mysqli_stmt_bind_param($stmt, "s", $email_user);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $user = mysqli_fetch_assoc($result);
+    mysqli_stmt_close($stmt);
 
     if (!empty($user) && isset($user['user_password']) && $current_pass === $user['user_password']) {
         if ($new_pass === $confirm_pass) {
-            $update_query = "UPDATE user SET user_password = '$new_pass' WHERE email = '$email_user'";
-            mysqli_query($conn, $update_query);
+            $update_query = "UPDATE user SET user_password = ? WHERE email = ?";
+            $stmt = mysqli_prepare($conn, $update_query);
+            mysqli_stmt_bind_param($stmt, "ss", $new_pass, $email_user);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+
             echo "<script>alert('Update password successful')</script>";
             header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+            exit();
         } else {
             echo "<script>alert('Wrong confirm password')</script>";
         }
@@ -28,44 +35,55 @@ if (isset($_POST['save_btn'])) {
         echo "<script>alert('Wrong current password')</script>";
     }
 }
-?>
 
-
-<?php // Register as a seller
 if (isset($_POST['seller_btn'])) {
     $email_user = $_SESSION['email_user'];
     include("../Sign_up/connect_db.php");
-    $select_query = "UPDATE user SET user_type = 'seller' WHERE email = '$email_user'";
-    $result = mysqli_query($conn, $select_query);
 
-    if (mysqli_affected_rows($conn) > 0) {
-        echo "<script>alert('Register successful')</script>";
+    $update_query = "UPDATE user SET user_type = 'seller' WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $update_query);
+    mysqli_stmt_bind_param($stmt, "s", $email_user);
+    mysqli_stmt_execute($stmt);
+    $affected_rows = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($affected_rows > 0) {
+        echo "<script>alert('Register as a seller successful')</script>";
         header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+        exit();
     } else {
-        echo "<script>alert('You already as a seller')</script>";
+        echo "<script>alert('You are already registered as a seller')</script>";
     }
 }
-?>
 
+if (isset($_POST['log_out_btn'])) {
+    session_destroy();
+    header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+}
 
-<?php // Delete account
 if (isset($_POST['delete_btn'])) {
-
     $email_user = $_SESSION['email_user'];
-
     include("../Sign_up/connect_db.php");
-    $select_query = "DELETE FROM user WHERE email = '$email_user'";
-    $result = mysqli_query($conn, $select_query);
 
-    if (mysqli_affected_rows($conn) > 0) {
+    $delete_query = "DELETE FROM user WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $delete_query);
+    mysqli_stmt_bind_param($stmt, "s", $email_user);
+    mysqli_stmt_execute($stmt);
+    $affected_rows = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($affected_rows > 0) {
         unset($_SESSION['email_user']);
-        echo "<script>alert('Delete successful')</script>";
+        echo "<script>alert('Account deletion successful')</script>";
         header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+        exit();
     } else {
-        echo "<script>alert('Delete failed')</script>";
+        echo "<script>alert('Account deletion failed')</script>";
     }
 }
+
 ?>
+
 
 
 
@@ -138,13 +156,24 @@ if (isset($_POST['delete_btn'])) {
                     <form action="" method="POST">
                         <div class="card-header">Register as a seller</div>
                         <div class="card-body">
-                            <p>By registering as a seller for Food Store Website, you can sell your products Food Store Website customers.</p>
-                            <p>After as a seller, You can not register as a customer</p>
+                            <p>By registering as a seller for Food Store Website, you can sell your products to Food Store Website customers.</p>
+                            <p>After registering as a seller, you cannot register as a customer.</p>
                             <button class="btn btn-danger-soft text-warning" name="seller_btn" type="submit">Register now</button>
                         </div>
                     </form>
                 </div>
 
+
+
+                <div class="card mb-4">
+                    <form action="" method="POST">
+                        <div class="card-header">Log out</div>
+                        <div class="card-body">
+                            <p>Log out your account</p>
+                            <button class="btn btn-danger-soft text-warning" name="log_out_btn" type="submit">Log out</button>
+                        </div>
+                    </form>
+                </div>
 
 
                 <div class="card mb-4">
@@ -156,6 +185,7 @@ if (isset($_POST['delete_btn'])) {
                         </div>
                     </form>
                 </div>
+
 
 
 

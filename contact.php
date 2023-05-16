@@ -37,38 +37,7 @@
 
   <!-- ***** Header Area Start ***** -->
   <header class="header-area header-sticky">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <!-- ***** Logo Start ***** -->
-            <a href="index.php" class="logo">Food Store <em> Website</em></a>
-            <!-- ***** Logo End ***** -->
-            <!-- ***** Menu Start ***** -->
-            <ul class="nav">
-              <li><a href="index.php">Home</a></li>
-              <li><a href="products.php">Products</a></li>
-              <li><a href="checkout.php">Checkout</a></li>
-              <li class="dropdown">
-                <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-
-                <div class="dropdown-menu">
-                  <a class="dropdown-item active" href="about.php">About Us</a>
-                  <a class="dropdown-item" href="blog.php">Blog</a>
-                  <a class="dropdown-item" href="testimonials.php">Testimonials</a>
-                  <a class="dropdown-item" href="terms.php">Terms</a>
-                </div>
-              </li>
-              <li><a href="contact.php">Contact</a></li>
-            </ul>
-            <a class='menu-trigger'>
-              <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
-    </div>
+    <?php require_once('./part/header.php'); ?>
   </header>
   <!-- ***** Header Area End ***** -->
 
@@ -106,7 +75,7 @@
 
           <h5><a href="#">+84 236 3888 503</a></h5>
 
-          <br>                                                                                                                                      
+          <br>
         </div>
 
         <div class="col-md-4">
@@ -178,7 +147,7 @@
       </div>
     </div>
   </section>
-  <!-- ***** Contact Us Area Ends ***** -->   
+  <!-- ***** Contact Us Area Ends ***** -->
 
   <!-- ***** Footer Start ***** -->
   <footer>

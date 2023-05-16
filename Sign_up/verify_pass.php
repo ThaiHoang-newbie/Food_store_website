@@ -86,7 +86,7 @@
                     sendding_mail($verify_email, $password);
 
                     // Insert email and pass in the database
-                    $sql = "INSERT INTO `User`(`email`,`user_password`) VALUES ('$verify_email','$password')";
+                    $sql = "INSERT INTO `User`(`email`,`user_password`, `user_type`) VALUES ('$verify_email','$password', 'customer')";
                     $result = mysqli_query($conn, $sql);
                 }
             };
@@ -152,9 +152,6 @@
         } else {
             echo "<script>alert('User not found')</script>";
         }
-        
-
-
         ?>
 
     </form>
