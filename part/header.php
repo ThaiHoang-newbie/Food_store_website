@@ -24,11 +24,9 @@
 
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="index.php">Home</a></li>
                         <li><a href="products.php">Products</a></li>
                         <li class="dropdown">
                             <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
-
                             <div class="dropdown-menu">
                                 <a class="dropdown-item active" href="about.php">About Us</a>
                                 <a class="dropdown-item" href="blog.php">Blog</a>

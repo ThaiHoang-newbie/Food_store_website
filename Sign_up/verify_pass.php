@@ -86,7 +86,7 @@
                     sendding_mail($verify_email, $password);
 
                     // Insert email and pass in the database
-                    $sql = "INSERT INTO `User`(`email`,`user_password`, `user_type`) VALUES ('$verify_email','$password', 'customer')";
+                    $sql = "INSERT INTO `User`(`email`,`user_password`, `user_type`, `budget`) VALUES ('$verify_email','$password', 'customer', 100)";
                     $result = mysqli_query($conn, $sql);
                 }
             };

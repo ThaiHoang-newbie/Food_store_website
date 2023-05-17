@@ -49,7 +49,6 @@ session_start();
                             <div class="card mb-12 mb-xl-0">
                                 <div class="card-header">User Information</div>
                                 <div class="card-body text-center">
-
                                     <img id="avatar" title="Upload your avatar" class="img-account-profile rounded-circle mb-2" src="
                                     <?php if ($row['avatar'] == null) { // Don't have any avt
                                         echo "https://iphonecugiare.com/wp-content/uploads/2020/03/84156601_1148106832202066_479016465572298752_o.jpg";
@@ -62,6 +61,7 @@ session_start();
                                     <div class="font-italic text-muted mb-4"><b>Phone Number: </b><?php echo $row['phone_number'] ?></div>
                                     <div class="font-italic text-muted mb-4"><b>Address: </b><?php echo $row['address'] ?></div>
                                     <div class="font-italic text-muted mb-4"><b>User type: </b><?php echo $row['user_type'] ?></div>
+                                    <div class="font-italic text-muted mb-4"><b>Account balance: </b><?php echo $row['budget']?>$</div>
                                     <button class="btn btn-primary" type="button" onclick="dir_infor()">Edit Profile</button>
                                 </div>
                             </div>

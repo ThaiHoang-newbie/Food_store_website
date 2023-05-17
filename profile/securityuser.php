@@ -36,6 +36,28 @@ if (isset($_POST['save_btn'])) {
     }
 }
 
+
+// Register as seller
+if (isset($_POST['seller_btn'])) {
+    $email_user = $_SESSION['email_user'];
+    include("../Sign_up/connect_db.php");
+
+    $update_query = "UPDATE user SET user_type = 'seller' WHERE email = ?";
+    $stmt = mysqli_prepare($conn, $update_query);
+    mysqli_stmt_bind_param($stmt, "s", $email_user);
+    mysqli_stmt_execute($stmt);
+    $affected_rows = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+
+    if ($affected_rows > 0) {
+        echo "<script>alert('Register as a seller successful')</script>";
+        header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
+        exit();
+    } else {
+        echo "<script>alert('You are already registered as a seller')</script>";
+    }
+}
+// Manager product
 if (isset($_POST['seller_btn'])) {
     $email_user = $_SESSION['email_user'];
     include("../Sign_up/connect_db.php");
@@ -56,32 +78,19 @@ if (isset($_POST['seller_btn'])) {
     }
 }
 
+
+
+
+
+
 if (isset($_POST['log_out_btn'])) {
     session_destroy();
     header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
 }
 
-if (isset($_POST['delete_btn'])) {
-    $email_user = $_SESSION['email_user'];
-    include("../Sign_up/connect_db.php");
-
-    $delete_query = "DELETE FROM user WHERE email = ?";
-    $stmt = mysqli_prepare($conn, $delete_query);
-    mysqli_stmt_bind_param($stmt, "s", $email_user);
-    mysqli_stmt_execute($stmt);
-    $affected_rows = mysqli_stmt_affected_rows($stmt);
-    mysqli_stmt_close($stmt);
-
-    if ($affected_rows > 0) {
-        unset($_SESSION['email_user']);
-        echo "<script>alert('Account deletion successful')</script>";
-        header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
-        exit();
-    } else {
-        echo "<script>alert('Account deletion failed')</script>";
-    }
+if (isset($_POST['manager_btn'])) {
+    header("Location: http://localhost/Food_store_website/seller/Adminseller.php");
 }
-
 ?>
 
 
@@ -152,13 +161,42 @@ if (isset($_POST['delete_btn'])) {
 
 
 
+
                 <div class="card mb-4">
                     <form action="" method="POST">
-                        <div class="card-header">Register as a seller</div>
+                        <div class="card-header">
+                            <?php
+                            $email_user = $_SESSION['email_user'];
+                            include("../Sign_up/connect_db.php");
+
+                            $user_type_query = "SELECT * FROM user WHERE email = ?";
+                            $stmt = mysqli_prepare($conn, $user_type_query);
+                            mysqli_stmt_bind_param($stmt, "s", $email_user);
+                            mysqli_stmt_execute($stmt);
+                            $result = mysqli_stmt_get_result($stmt);
+                            $user = mysqli_fetch_assoc($result);
+                            mysqli_stmt_close($stmt);
+
+                            $userType = $user['user_type'];
+
+                            if ($userType === 'customer') {
+                                echo 'Register as a seller';
+                            } else {
+                                echo 'Manage Products';
+                            }
+                            ?>
+                        </div>
                         <div class="card-body">
-                            <p>By registering as a seller for Food Store Website, you can sell your products to Food Store Website customers.</p>
-                            <p>After registering as a seller, you cannot register as a customer.</p>
-                            <button class="btn btn-danger-soft text-warning" name="seller_btn" type="submit">Register now</button>
+                            <?php
+                            if ($userType === 'customer') {
+                                echo '<p>By registering as a seller for Food Store Website, you can sell your products to Food Store Website customers.</p>
+                      <p>After registering as a seller, you cannot register as a customer.</p>
+                      <button class="btn btn-danger-soft text-warning" name="seller_btn" type="submit">Register now</button>';
+                            } else {
+                                echo '<p>Manage your products on Food Store Website.</p>
+                      <button class="btn btn-danger-soft text-warning" name="manager_btn" type="submit">Manage Products</button>';
+                            }
+                            ?>
                         </div>
                     </form>
                 </div>

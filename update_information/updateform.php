@@ -59,6 +59,11 @@
                                     <input type="text" name="address" class="form-control" value="<?php echo $row['address']; ?>">
                                 </div>
 
+                                <div class="form-group mb-3">
+                                    <label for="">Avatar</label>
+                                    <input type="text" name="avatar" class="form-control" value="">
+                                </div>
+
                                 <div class="two_buttons form-group mb-3" style="display: flex; justify-content: space-between;">
                                     <button type="submit" name="update-info" class="btn btn-primary"><b>Save</b></button>
                                     <button type="submit" name="update-back" class="btn btn-primary">Back</button>
@@ -78,8 +83,9 @@
                     $name = $_POST['username'];
                     $phone = $_POST['phone_number'];
                     $address = $_POST['address'];
+                    $avatar = $_POST['avatar'];
 
-                    $query = "UPDATE `user` SET `username`='$name',`phone_number`='$phone', `address`='$address' WHERE email='$email_user' ";
+                    $query = "UPDATE `user` SET `username`='$name',`phone_number`='$phone', `address`='$address', `avatar`='$avatar' WHERE email='$email_user' ";
 
                     $query_run = mysqli_query($conn, $query);
 

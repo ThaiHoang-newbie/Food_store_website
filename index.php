@@ -108,7 +108,7 @@ session_start();
                                 <h4><?php echo $row['product_name'] ?></h4>
                                 <p><?php echo $row['description'] ?></p>
                                 <ul class="social-icons">
-                                    <li><a href="./product-details.php">+ View More</a></li>
+                                    <li><a href="./products.php">+ View More</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -119,7 +119,7 @@ session_start();
             <br>
 
             <div class="main-button text-center">
-                <a href="products.php">View our products</a>
+                <a href="./products.php">View our products</a>
             </div>
         </div>
     </section>
