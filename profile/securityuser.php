@@ -79,10 +79,6 @@ if (isset($_POST['seller_btn'])) {
 }
 
 
-
-
-
-
 if (isset($_POST['log_out_btn'])) {
     session_destroy();
     header("Refresh: 1.5; url=http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php");
@@ -92,9 +88,6 @@ if (isset($_POST['manager_btn'])) {
     header("Location: http://localhost/Food_store_website/seller/Adminseller.php");
 }
 ?>
-
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -179,7 +172,7 @@ if (isset($_POST['manager_btn'])) {
 
                             $userType = $user['user_type'];
 
-                            if ($userType === 'customer') {
+                            if ($userType === 'Customer') {
                                 echo 'Register as a seller';
                             } else {
                                 echo 'Manage Products';
@@ -188,7 +181,7 @@ if (isset($_POST['manager_btn'])) {
                         </div>
                         <div class="card-body">
                             <?php
-                            if ($userType === 'customer') {
+                            if ($userType === 'Customer') {
                                 echo '<p>By registering as a seller for Food Store Website, you can sell your products to Food Store Website customers.</p>
                       <p>After registering as a seller, you cannot register as a customer.</p>
                       <button class="btn btn-danger-soft text-warning" name="seller_btn" type="submit">Register now</button>';

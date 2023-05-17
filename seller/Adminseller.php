@@ -47,7 +47,7 @@ session_start();
 					<tbody>
 						<?php
 						require('../connect.php');
-						$sql = "SELECT*FROM `product`";
+						$sql = "SELECT * FROM `product`, `user` WHERE product.user_id = user.user_id";
 						$result = mysqli_query($conn, $sql);
 						while ($row = mysqli_fetch_assoc($result)) {
 						?>
