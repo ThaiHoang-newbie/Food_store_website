@@ -34,6 +34,10 @@ session_start();
 
 <body>
 
+
+
+
+
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
@@ -50,7 +54,8 @@ session_start();
 
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
-        <?php require_once('./part/header.php'); ?>
+        <?php 
+        include('./part/header.php')?>
     </header>
     <!-- ***** Header Area End ***** -->
 

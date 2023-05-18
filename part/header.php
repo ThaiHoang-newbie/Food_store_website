@@ -1,3 +1,5 @@
+<? session_start(); ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -12,8 +14,9 @@
 
 </head>
 
+
 <body>
-    <div class="container">
+    .<div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
@@ -24,7 +27,23 @@
 
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="products.php">Products</a></li>
+                    
+                        <?php
+                        $email_user = $_SESSION['email_user'];
+                        include("./connect.php");
+                        $user_type_query = "SELECT * FROM user WHERE email = ?";
+                        $stmt = mysqli_prepare($conn, $user_type_query);
+                        mysqli_stmt_bind_param($stmt, "s", $email_user);
+                        mysqli_stmt_execute($stmt);
+                        $result = mysqli_stmt_get_result($stmt);
+                        $user = mysqli_fetch_assoc($result);
+                        mysqli_stmt_close($stmt);
+                        $userType = $user['user_type'];
+
+                        if ($userType === 'Seller') {
+                            echo '<li><a href="products.php">My products</a></li>';
+                        }
+                        ?>
                         <li class="dropdown">
                             <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
                             <div class="dropdown-menu">
@@ -34,7 +53,8 @@
                                 <a class="dropdown-item" href="terms.php">Terms</a>
                             </div>
                         </li>
-                        <li><a href="contact.php">Contact</a></li>
+                        <li><a href="http://localhost/Food_store_website/products.php">Products</a></li>
+                        <li><a href="./contact.php">Contact</a></li>
                         <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
                         <script>
                             function dir_infor() {
@@ -74,9 +94,6 @@
             </div>
         </div>
     </div>
-
-
-
 
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
