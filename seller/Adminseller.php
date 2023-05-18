@@ -29,7 +29,7 @@ session_start();
 							<h2>Manage <b>Product</b> </h2>
 						</div>
 						<div class="col-sm-6">
-							<a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
+							<a href="#addProduct" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Product</span></a>
 						</div>
 					</div>
 				</div>
@@ -39,15 +39,25 @@ session_start();
 							<th>Products Name</th>
 							<th>Description</th>
 							<th>Price</th>
+							<th>New_Price</th>
 							<th>Image</th>
 							<th>Actions</th>
+							
 						</tr>
 					</thead>
 
 					<tbody>
 						<?php
 						require('../connect.php');
-						$sql = "SELECT * FROM `product`, `user` WHERE product.user_id = user.user_id";
+						if (isset($_SESSION['email_user'])) {
+						$email = $_SESSION['email_user'];
+						$query = "SELECT user_id FROM user WHERE email = '$email'";
+						$result = mysqli_query($conn,$query);
+						$row = mysqli_fetch_assoc($result);
+						$user_id = $row['user_id'];
+						
+
+						$sql = "SELECT * FROM product WHERE user_id = $user_id";
 						$result = mysqli_query($conn, $sql);
 						while ($row = mysqli_fetch_assoc($result)) {
 						?>
@@ -64,14 +74,14 @@ session_start();
 
 					</tbody>
 				<?php } ?>
-
+				<?php } ?>
 				</table>
 			</div>
 		</div>
 	</div>
 
 	<!-- Add Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade">
+	<div id="addProduct" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form method='post' action='add.php'>
@@ -101,11 +111,12 @@ session_start();
 							<label>image</label>
 							<input type="text" name="image" class="form-control" required>
 						</div>
+							
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 						<input type="submit" name="Add" class="btn btn-success" value="Add">
-					</div>
+					</div>		
 				</form>
 			</div>
 		</div>
@@ -113,7 +124,7 @@ session_start();
 
 
 	<!-- Edit Modal HTML -->
-	<div id="editEmployeeModal" class="modal fade">
+	<div id="editProduct" class="modal fade">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<form>
@@ -143,6 +154,7 @@ session_start();
 							<label>image</label>
 							<input type="text" id="image" class="form-control" required>
 						</div>
+						
 					</div>
 					<div class="modal-footer">
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
@@ -161,7 +173,7 @@ session_start();
 			var product_name = $('#' + id).children('td[data-target=product_name]').text();
 			var description = $('#' + id).children('td[data-target=description]').text();
 			var price = $('#' + id).children('td[data-target=price]').text();
-			var new_price = $('#' + id).children('td[data-target=Newprice]').text();
+			var new_price = $('#' + id).children('td[data-target=newprice]').text();
 			var image_url = $('#' + id).children('td[data-target=image_url]').find('img').attr('src');
 
 			$('#pro_name').val(product_name);
@@ -170,7 +182,7 @@ session_start();
 			$('#New_price').val(new_price);
 			$('#image').val(image_url);
 			$('#pro_id').val(id);
-			$('#editEmployeeModal').modal('toggle');
+			$('#editProduct').modal('toggle');
 
 		});
 
