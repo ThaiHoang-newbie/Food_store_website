@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
@@ -14,21 +16,38 @@
     <link rel="stylesheet" href="https://unpkg.com/sweetalert/dist/sweetalert.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
+<style>
+    .quantity-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background-color: #ccc;
+        border: none;
+        cursor: pointer;
+        margin: 0 5px;
+        font-size: 16px;
+    }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+    }
+</style>
 <?php
-include('connectdb.php');
 session_start();
-$_SESSION['userid'] = 1;
-$userid = $_SESSION['userid'];
+$_SESSION['bills'] = array();
+$userid =  $_SESSION["user_id"];
 $productid = array();
-$check = "SELECT budget FROM user where user_id = ?";
-$stmt = mysqli_prepare($mysqli, $check);
-mysqli_stmt_bind_param($stmt, "i", $userid);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $money);
-mysqli_stmt_fetch($stmt);
-mysqli_stmt_close($stmt);
+include('connectdb.php');
 ?>
-?>
+
 <body>
     <div class="container px-3 my-5 clearfix">
         <div class="card">
@@ -82,8 +101,16 @@ mysqli_stmt_close($stmt);
                                                 $rows = $kq->fetch_assoc();
                                             ?>
 
-                                                <td class="align-middle p-4"><input type="text" class="form-control text-center" value="<?php echo $value ?>"></td>
-                                                <td class="text-right font-weight-semibold align-middle p-4"><?php echo $price; ?></td>
+
+                                                <td class="align-middle p-4">
+                                                    <div class="quantity-container">
+                                                        <button class="quantity-button minus-button" type="button">-</button>
+                                                        <input type="text" class="form-control text-center quantity-input" name="quantity[<?php echo $key; ?>]" value="<?php echo $value; ?>">
+                                                        <button class="quantity-button plus-button" type="button">+</button>
+                                                    </div>
+                                                </td>
+
+                                                <td class="text-right font-weight-semibold align-middle p-4 " id="total-price-<?php echo $row['product_id'] ?>"><?php echo $price; ?></td>
                                             <?php $totalprice = $totalprice + $price;
                                             } ?>
                                             <td class="text-center align-middle px-0">
@@ -115,41 +142,105 @@ mysqli_stmt_close($stmt);
                 <form action="" method="post">
                     <div class="float-right">
                         <button type="button" class="btn btn-lg btn-default md-btn-flat mt-2 mr-3" onclick="window.location = '../index.php'">Back to shopping</button>
-                        <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout" onclick="checkout()">Checkout</button>
-
-                        <script>
-                            function checkout() {
-                                <?php
-                                if (isset($_POST['checkout'])) {
-                                    foreach ($_SESSION['orders'] as $key => $value) {
-                                        $date_array = getdate();
-                                        $date .= $date_array['year'] . "-";
-                                        $date .= "0" . $date_array['mon'] . "-";
-                                        $date .= $date_array['mday'];
-                                        $status = "pending";
-                                        if ($money['budget'] < $totalprice) {
-                                            // Hiển thị thông báo lỗi
-                                            echo "<script> swal('Lỗi', 'Bạn không đủ tiền để mua các món hàng này', 'error');</script>";
-                                        } else {
-                                            $insert = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES (1,$key,'$date',$value,$totalprice,'$status')";
-                                            $ins = $mysqli->query($insert);
-                                            if ($ins) {
-                                                unset($_SESSION['orders'][$key]);
-                                            }
-                                        }
-                                    }
-                                }
-                                ?>
-                            }
-                            const checkoutButton = document.getElementById('checkout');
-                            checkoutButton.addEventListener('click', function() {
-                                window.location.href = 'bill.php';
-                            });
-                        </script>
+                        <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout">Checkout</button>
                     </div>
                 </form>
+                <?php
+                $date_array = getdate();
+                $date .= $date_array['year'] . "-";
+                $date .= "0" . $date_array['mon'] . "-";
+                $date .= $date_array['mday'];
+                $status = "pending";
+                $check = "SELECT budget FROM users where user_id = $userid";
+                // $stmt = mysqli_prepare($mysqli, $check);
+                // mysqli_stmt_bind_param($stmt, "i", $userid);
+                // mysqli_stmt_execute($stmt);
+                // mysqli_stmt_bind_result($stmt, $money);
+                // mysqli_stmt_fetch($stmt);
+                $query = $mysqli->query($check);
+                $row = $query->fetch_assoc();
+                if (isset($_POST['checkout'])) {
+                    foreach ($_SESSION['orders'] as $key => $value) {
+                        $pro = "SELECT * FROM Product where product_id = $key ;";
+                        $result = $mysqli->query($pro);
+                        $rel = $result->fetch_assoc();
+                        if (empty($rel['newprice'])) {
+                            $price = $value * $rel['price'];
+                        } else {
+                            $price = $value * $rel['newprice'];
+                        }
+
+                        if (floatval($row['budget']) >= $totalprice) {
+                            $muser = $row['budget'] - $price;
+                            $sql = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES ($userid,$key,'$date',$value,$price,'$status')";
+                            $add = $mysqli->query($sql);
+                            $minusmoney = "UPDATE users SET `budget`=$muser WHERE user_id = $userid";
+                            $minusm = $mysqli->query($minusmoney);
+                            if ($add) {
+                                $_SESSION['bills'] += $_SESSION['orders'];
+                                unset($_SESSION['orders'][$key]);
+                            }
+                            $i = $i + 1;
+                        } else {
+                            echo "<script>swal('Error', 'You don\'t have enough money to buy these items', 'error');</script>";
+                            break;
+                        }
+                    }
+
+                    //Gửi email bill.
+                    $mail = new PHPMailer;
+                    ob_start();
+                    include 'path/to/bill.php';
+                    $emailContent = ob_get_clean();
+
+                    $mail->Body = $emailContent;  // Nội dung email
+
+                    if ($i > 0) {
+                        echo "<script>window.location.href ='http://localhost/project/Food_store_website/check_out/bill.php';</script>";
+                        exit;
+                    }
+                }
+                ?>
             </div>
         </div>
     </div>
+
+    <script>
+        // Lắng nghe sự kiện nhấn các nút tăng và giảm số lượng
+        $(document).on('click', '.quantity-button', function(event) {
+            var inputElement = $(this).closest('.quantity-container').find('.quantity-input');
+            var currentValue = parseInt(inputElement.val());
+            var productId = inputElement.attr('name').match(/\[(\d+)\]/)[1];
+
+            // Xử lý tăng hoặc giảm số lượng sản phẩm
+            if ($(this).hasClass('plus-button')) {
+                currentValue++;
+            } else if ($(this).hasClass('minus-button')) {
+                if (currentValue > 1) {
+                    currentValue--;
+                }
+            }
+
+            // Cập nhật giá trị số lượng sản phẩm trong input
+            inputElement.val(currentValue);
+
+            // Gửi yêu cầu AJAX để cập nhật số tiền
+            $.ajax({
+                url: 'update_price.php',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    quantity: currentValue
+                },
+                success: function(response) {
+                    // Cập nhật tổng số tiền hiển thị trên giao diện
+                    var totalPrice = parseFloat(response);
+                    $('#total-price-' + productId).text(totalPrice);
+                    console.log(productId);
+                }
+            });
+        });
+    </script>
 </body>
+
 </html>
