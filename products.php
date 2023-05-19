@@ -24,13 +24,15 @@
             height: 100%;
             object-fit: contain;
         }
-        img{
+
+        img {
             width: 200px;
             height: 200px;
         }
     </style>
 
 </head>
+
 <body>
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
@@ -70,7 +72,6 @@
                             </li>
                             <li><a href="contact.php">Contact</a></li>
                             <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
-                            
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -101,15 +102,46 @@
     <!-- ***** Call to Action End ***** -->
 
     <!-- ***** Fleet Starts ***** -->
+    <br>
+
+    <div class="container">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-outline-secondary">Filter</button>
+                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+
+                <div class="dropdown-menu">
+                    <?php
+                    include('../Food_store_website/check_out/connectdb.php');
+                    $sql = "SELECT * FROM category;";
+                    $result = $mysqli->query($sql);
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo '<a class="dropdown-item" href="products.php?category=' . $row["category_id"] . '">' . $row["category_name"] . '</a>';
+                        }
+                    } else {
+                        echo '<a class="dropdown-item" href="#">No categories found</a>';
+                    }
+                    ?>
+                    <div role="separator" class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="products.php">All products</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="section" id="trainers">
         <div class="container">
             <br>
             <br>
             <?php
-          
             include('../Food_store_website/check_out/connectdb.php');
-            $sql = "SELECT * FROM product;";
+            $category = isset($_GET['category']) ? $_GET['category'] : '';
+            $sql = "SELECT * FROM product";
+            if (!empty($category)) {
+                $sql .= " WHERE category_id = '$category'";
+            }
             $result = $mysqli->query($sql);
             if ($result->num_rows > 0) {
             ?>
@@ -133,27 +165,25 @@
                                     <h4><?php echo $row["product_name"]; ?></h4>
 
                                     <p><?php echo $row["description"]; ?></p>
-
                                     <ul class="social-icons">
                                         <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                <?php  }
-                } else {
-                    echo "0 results";
-                }
-                $mysqli->close();
-                ?>
+                    <?php } ?>
                 </div>
-
+            <?php } else {
+                echo "<p>No products found.</p>";
+            }
+            ?>
+        </div>
     </section>
+
     <!-- ***** Fleet Ends ***** -->
 
-
-    <!-- ***** Footer Start ***** -->
-    <footer>
+     <!-- ***** Footer Start ***** -->
+     <footer>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
