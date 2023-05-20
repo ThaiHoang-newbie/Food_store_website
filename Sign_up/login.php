@@ -68,6 +68,21 @@ session_start();
     $email_input = $_POST['email'];
     $password_input = $_POST['password'];
 
+
+
+    if ($email_input == "admin") {
+      if ($password_input == "admin") {
+        header("Location: http://localhost/Food_store_website/admin_panel/");
+        exit();
+      } else {
+        echo "<script>alert('Wrong admin password')</script>";
+      }
+    }
+
+    
+  error_reporting(0);
+
+
     // Prevent MySQL injection
     $select_log_user_email = "SELECT `email` FROM `user` WHERE `email` = ?";
     $stmt_email = mysqli_prepare($conn, $select_log_user_email);
@@ -85,10 +100,16 @@ session_start();
     $p_fetch = mysqli_stmt_fetch($stmt_pass);
 
 
-
     if (!empty($e_fetch)) {
       if (!empty($p_fetch)) {
+        $select_usid = "SELECT `user_id` FROM `user` WHERE `user_password` = $password_input";
+        $run = $conn->query($select_usid);
+
+        $usid_run = $run->fetch_assoc();
+
         $_SESSION['email_user'] = $email_input;
+
+        $_SESSION['user_id'] = $usid_run;
         header("Location: http://localhost/Food_store_website/");
       } else {
         echo "<script>alert('Wrong password')</script>";
@@ -96,7 +117,9 @@ session_start();
     } else {
       echo "<script>alert('You must register first')</script>";
     }
-  }
+  };
+
+
 
   ?>
 

@@ -71,7 +71,10 @@
                     $mail->addAddress($verify_email);
                     $mail->isHTML(true);
                     $mail->Subject = "[Food store website]_Your password";
+
                     $mail->Body = "Here is your password: " . $password;
+
+
                     $mail->send();
                 };
 
