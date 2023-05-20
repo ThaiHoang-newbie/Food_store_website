@@ -127,8 +127,8 @@ include('connectdb.php');
                 </div>
                 <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
                     <div class="mt-4">
-                        <label class="text-muted font-weight-normal">Promocode</label>
-                        <input type="text" placeholder="ABC" class="form-control">
+                        <label class="text-muted font-weight-normal">Discount coupon</label>
+                        <input type="text" placeholder="#ABCD" class="form-control">
                     </div>
                     <div class="d-flex">
 
