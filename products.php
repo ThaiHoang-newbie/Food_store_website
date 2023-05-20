@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
@@ -17,10 +16,22 @@
 
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        .image-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        img{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+
 </head>
-
 <body>
-
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
@@ -33,7 +44,6 @@
         </div>
     </div>
     <!-- ***** Preloader End ***** -->
-
 
     <!-- ***** Header Area Start ***** -->
     <header class="header-area header-sticky">
@@ -48,7 +58,6 @@
                         <ul class="nav">
                             <li><a href="index.php">Home</a></li>
                             <li><a href="products.php">Products</a></li>
-                            <li><a href="checkout.php">Checkout</a></li>
                             <li class="dropdown">
                                 <a class="dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">About</a>
 
@@ -60,6 +69,9 @@
                                 </div>
                             </li>
                             <li><a href="contact.php">Contact</a></li>
+                            <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
+                          
+                            
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -90,34 +102,53 @@
     <!-- ***** Call to Action End ***** -->
 
     <!-- ***** Fleet Starts ***** -->
+
     <section class="section" id="trainers">
         <div class="container">
             <br>
             <br>
+            <?php
+          
+            include('../Food_store_website/check_out/connectdb.php');
+            $sql = "SELECT * FROM product;";
+            $result = $mysqli->query($sql);
+            if ($result->num_rows > 0) {
+            ?>
+                <div class="row">
+                    <?php while ($row = $result->fetch_assoc()) { ?>
+                        <div class="col-lg-3">
+                            <div class="trainer-item">
 
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/product-1-720x480.jpg" alt="">
+                                <div class="image-thumb">
+                                    <img src="<?php echo $row["image_url"]; ?>" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span>
+                                        <?php if (empty($row["newprice"]) or $row["newprice"] == 0) { ?>
+                                            <sup>$</sup><em><?php echo $row["price"]; ?></em>
+                                        <?php } else { ?>
+                                            <del><sup>$</sup><?php echo $row["price"]; ?></del> <sup>$</sup><em><?php echo $row["newprice"]; ?></em>
+                                        <?php } ?>
+                                    </span>
+
+                                    <h4><?php echo $row["product_name"]; ?></h4>
+
+                                    <p><?php echo $row["description"]; ?></p>
+
+                                    <ul class="social-icons">
+                                        <li><a href="product-details.php?id=<?php echo $row["product_id"]; ?>">+ Order</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="down-content">
-                            <span>
-                                <del><sup>$</sup>15.00</del> <sup>$</sup>17.00
-                            </span>
-
-                            <h4>Lorem ipsum dolor sit amet, consectetur</h4>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, libero, reprehenderit? Aliquam vel, voluptate placeat, porro nemo impedit reprehenderit eligendi.</p>
-
-                            <ul class="social-icons">
-                                <li><a href="product-details.php">+ Order</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                <?php  }
+                } else {
+                    echo "0 results";
+                }
+                $mysqli->close();
+                ?>
                 </div>
 
-        </div>
     </section>
     <!-- ***** Fleet Ends ***** -->
 

@@ -1,0 +1,8 @@
+.nav-borders {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nav-link {
+    cursor: pointer;
+}

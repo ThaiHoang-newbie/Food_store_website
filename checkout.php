@@ -126,25 +126,13 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-6 col-xs-12">
-                                    <label>Address 1:</label>
+                                <div class="col-sm-12 col-xs-12">
+                                    <label>Address: </label>
                                     <input type="text">
                                 </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <label>Address 2:</label>
-                                    <input type="text">
-                                </div>
+                             
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6 col-xs-12">
-                                    <label>City:</label>
-                                    <input type="text">
-                                </div>
-                                <div class="col-sm-6 col-xs-12">
-                                    <label>State:</label>
-                                    <input type="text">
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-sm-6 col-xs-12">
                                     <label>Zip:</label>
@@ -203,35 +191,52 @@
                         <li class="list-group-item" style="margin:0 0 -1px">
                             <div class="row">
                                 <div class="col-6">
-                                    <strong>Sub-total</strong>
+                                    <strong>Name Product</strong>
                                 </div>
-
                                 <div class="col-6">
-                                    <h5 class="text-right">$ 128.00</h5>
+                                    <?php
+                                    include('connectdb.php');
+                                   
+                                    $ordid = $_GET['id'];
+                                    
+                                
+
+                                    $nsql  = "SELECT product_id FROM Orders where order_id = $ordid;";
+                                    $result = $mysqli->query($nsql);
+                                    if ($result->num_rows > 0) {
+                                        // output data of each row
+                                        $row = $result->fetch_assoc();
+                                        $prdid = $row['product_id'];
+                                        $namesql = "SELECT product_name FROM Product where product_id = $prdid;";
+                                        $nameproduct = $mysqli->query($namesql);
+                                        if ($nameproduct->num_rows > 0) {
+                                            while ($row = $nameproduct->fetch_assoc()) {
+                                    ?>
+                                                <h5 class="text-right"><?php echo $row['product_name'] ?></h5>
+                                    <?php }
+                                        }
+                                    } ?>
+
                                 </div>
                             </div>
                         </li>
-
                         <li class="list-group-item" style="margin:0 0 -1px">
                             <div class="row">
                                 <div class="col-6">
-                                    <strong>Extra</strong>
-                                </div>
+                                <?php
+                                    $ordid = $_GET['id'];
 
-                                <div class="col-6">
-                                    <h5 class="text-right">$ 0.00</h5>
-                                </div>
-                            </div>
-                        </li>
+                                    $sql = "SELECT order_id,quantity,total_amount FROM Orders;";
+                                    $kq = $mysqli->query($sql);
 
-                        <li class="list-group-item" style="margin:0 0 -1px">
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Tax</strong>
+                                    if ($kq->num_rows > 0) {
+                                        // output data of each row
+                                        while ($row = $kq->fetch_assoc()) {
+                                            if ($row['order_id'] == $ordid) { ?>
+                                    <strong>Quantity</strong>
                                 </div>
-
                                 <div class="col-6">
-                                    <h5 class="text-right">$ 10.00</h5>
+                                    <h5 class="text-right"><?php echo $row['quantity'];?></h5>
                                 </div>
                             </div>
                         </li>
@@ -243,24 +248,16 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <h4 class="text-right">$ 138.00</h4>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item" style="margin:0 0 -1px">
-                            <div class="row">
-                                <div class="col-6">
-                                    <strong>Deposit</strong>
-                                </div>
-
-                                <div class="col-6">
-                                    <h5 class="text-right">$ 10.00</h5>
+                                   
+                                                <h4 class="text-right">$<?php echo $row['total_amount'];?></h4>
+                                    <?php }
+                                            
+                                        }
+                                    } ?>
                                 </div>
                             </div>
                         </li>
                     </ul>
-
                     <br>
                 </div>
             </div>

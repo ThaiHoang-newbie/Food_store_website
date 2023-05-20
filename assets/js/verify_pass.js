@@ -23,9 +23,7 @@ function handle_next_input(event) {
         document.querySelector("#_otp").classList.replace("_notok", "_ok")
         document.querySelector("#_otp").innerText = _finalKey;
 
-        // Retrive code entered by user
         var finalOTP = document.querySelector("#_otp").innerText;
-
         // Send it to PHP using AJAX request
         var xmlhttp = new XMLHttpRequest();
 

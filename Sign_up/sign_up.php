@@ -18,11 +18,14 @@ if (isset($_POST['button']) && isset($_POST['email'])) {
             echo "<script>alert('This email was being used')</script>";
         } else {
             $_SESSION['email'] = $email;
+            ?>
+                <script>animation();</script>
+            <?php
             header("Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/verify_pass.php");
             die();
         }
     } else {
-        echo "<script>alert('Email invalid');</script>";
+        echo "<script>alert('Email invalid');</>";
     }
 }
 ?>
@@ -241,81 +244,69 @@ if (isset($_POST['button']) && isset($_POST['email'])) {
     <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/SplitText3.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/3.2.6/TextPlugin.min.js'></script>
     <script id="rendered-js">
-
-
-        var cloudOne = gsap.timeline({
-            repeat: -1,
-            delay: -12
-        });
-        cloudOne.to("#cloud-one", 36, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudTwo = gsap.timeline({
-            repeat: -1,
-            delay: -3
-        });
-        cloudTwo.to("#cloud-two", 24, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudFour = gsap.timeline({
-            repeat: -1,
-            delay: 4
-        });
-        cloudFour.to("#cloud-four", 33, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        var cloudFive = gsap.timeline({
-            repeat: -1
-        });
-        cloudFive.to("#cloud-five", 24, {
-            x: "-720px",
-            ease: Linear.easeNone
-        });
-
-        // $("#email").focus(function() {
-        //     if ($("#email").val() == "") {
-        //         $("#placeholder").fadeToggle();
-        //     }
-        // });
-        // $("#email").focusout(function() {
-        //     if ($("#email").val() == "") {
-        //         $("#placeholder").fadeToggle();
-        //     }
-        // });
-
-        $("#btn").mouseenter(function() {
-            gsap.to("#btnSVG", .3, {
-                fill: "#d85168"
+            var cloudOne = gsap.timeline({
+                repeat: -1,
+                delay: -12
             });
-        });
-        $("#btn").mouseleave(function() {
-            gsap.to("#btnSVG", .3, {
-                fill: "#ed563b"
+            cloudOne.to("#cloud-one", 36, {
+                x: "-720px",
+                ease: Linear.easeNone
             });
-        });
 
-        $("#email").on("keypress", function(e) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode === 13) {
-                $("#btn").click();
-            }
-        });
+            var cloudTwo = gsap.timeline({
+                repeat: -1,
+                delay: -3
+            });
+            cloudTwo.to("#cloud-two", 24, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
 
-        gsap.set("#mail", {
-            scale: 0,
-            x: 20,
-            transformOrigin: "right"
-        });
+            var cloudFour = gsap.timeline({
+                repeat: -1,
+                delay: 4
+            });
+            cloudFour.to("#cloud-four", 33, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
 
-        $(":submit").click(function() {
-            animation();
-        });
+            var cloudFive = gsap.timeline({
+                repeat: -1
+            });
+            cloudFive.to("#cloud-five", 24, {
+                x: "-720px",
+                ease: Linear.easeNone
+            });
+
+            $("#btn").mouseenter(function() {
+                gsap.to("#btnSVG", .3, {
+                    fill: "#d85168"
+                });
+            });
+            $("#btn").mouseleave(function() {
+                gsap.to("#btnSVG", .3, {
+                    fill: "#ed563b"
+                });
+            });
+
+            $("#email").on("keypress", function(e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    $("#btn").click();
+                }
+            });
+
+            gsap.set("#mail", {
+                scale: 0,
+                x: 20,
+                transformOrigin: "right"
+            });
+                            
+            $(":submit").click(function() {
+                animation();
+            });
+
     </script>
 
 

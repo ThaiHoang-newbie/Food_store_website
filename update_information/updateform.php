@@ -25,15 +25,10 @@
                 include("../Sign_up/connect_db.php");
 
                 if (isset($_SESSION['email_user'])) {
-                ?>
 
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <strong>Hey!</strong> <?php echo $_SESSION['email_user']; ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                <?php
+
+                    //Handle avt
                 }
-
                 $email_user = $_SESSION['email_user'];
                 $select_avt = "SELECT * FROM `user` WHERE `email` = '$email_user'";
                 $result = mysqli_query($conn, $select_avt);
@@ -54,15 +49,9 @@
                                     <input type="text" name="username" class="form-control" value="<?php echo $row['username']; ?>">
                                 </div>
 
-
-                                <div class="form-group mb-3">
-                                    <label for="">Password</label>
-                                    <input type="password" name="password" class="form-control" value="<?php echo $row['user_password']; ?>">
-                                </div>
-
                                 <div class="form-group mb-3">
                                     <label for="">Phone Number</label>
-                                    <input type="phone" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
+                                    <input type="tel" name="phone_number" class="form-control" value="<?php echo $row['phone_number']; ?>">
                                 </div>
 
                                 <div class="form-group mb-3">
@@ -70,9 +59,14 @@
                                     <input type="text" name="address" class="form-control" value="<?php echo $row['address']; ?>">
                                 </div>
 
-
                                 <div class="form-group mb-3">
-                                    <button type="submit" name="update-info" class="btn btn-primary">Update Data</button>
+                                    <label for="">Avatar</label>
+                                    <input type="text" name="avatar" class="form-control" value="">
+                                </div>
+
+                                <div class="two_buttons form-group mb-3" style="display: flex; justify-content: space-between;">
+                                    <button type="submit" name="update-info" class="btn btn-primary"><b>Save</b></button>
+                                    <button type="submit" name="update-back" class="btn btn-primary">Back</button>
                                 </div>
 
                             </form>
@@ -83,16 +77,15 @@
                 ?>
 
 
+
                 <?php
                 if (isset($_POST['update-info'])) {
                     $name = $_POST['username'];
-                    $password = $_POST['password'];
                     $phone = $_POST['phone_number'];
                     $address = $_POST['address'];
+                    $avatar = $_POST['avatar'];
 
-                    $query = "UPDATE `user` SET `username`='$name', `user_password`='$password',
-                    `phone_number`='$phone', `address`='$address' 
-                    WHERE email='$email_user' ";
+                    $query = "UPDATE `user` SET `username`='$name',`phone_number`='$phone', `address`='$address', `avatar`='$avatar' WHERE email='$email_user' ";
 
                     $query_run = mysqli_query($conn, $query);
 
@@ -105,6 +98,9 @@
                     } else {
                         echo "<script>alert('Update failed!')</script>";
                     }
+                }
+                if (isset($_POST['update-back'])){
+                    header('Location: http://localhost/Food_store_website/profile/user.php');
                 }
                 ?>
 

@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/verify_pass.css">
+    <link rel="stylesheet" href="../assets/css/verify_pass.css">
 </head>
 
 
@@ -71,7 +71,10 @@
                     $mail->addAddress($verify_email);
                     $mail->isHTML(true);
                     $mail->Subject = "[Food store website]_Your password";
+
                     $mail->Body = "Here is your password: " . $password;
+
+
                     $mail->send();
                 };
 
@@ -86,7 +89,7 @@
                     sendding_mail($verify_email, $password);
 
                     // Insert email and pass in the database
-                    $sql = "INSERT INTO `User`(`email`,`user_password`) VALUES ('$verify_email','$password')";
+                    $sql = "INSERT INTO `User`(`email`,`user_password`, `user_type`, `budget`) VALUES ('$verify_email','$password', 'customer', 100)";
                     $result = mysqli_query($conn, $sql);
                 }
             };
@@ -139,8 +142,12 @@
 
         if ($row = mysqli_fetch_assoc($conn_user_pass)) {
             if ($variableName == $row['user_password']) {
-                header('Location: http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php');
-                exit();
+                echo "<script>alert('Verify email successfull')</script>";
+                echo "<script>
+                    setTimeout(function(){
+                        window.location.href = 'http://localhost/FOOD_STORE_WEBSITE/sign_up/login.php';
+                    }, 1000);
+                </script>";
             } else if ($variableName == null) {
             } else {
                 echo "<script>alert('Password incorrect')</script>";
@@ -148,7 +155,6 @@
         } else {
             echo "<script>alert('User not found')</script>";
         }
-
         ?>
 
     </form>
@@ -158,7 +164,7 @@
     <script src="../assets/js/verify_pass.js">
     </script>
 
-    
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
     </script>
