@@ -18,8 +18,19 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-</head>
+    <style>
+        .image-thumb {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        img{
+            width: 200px;
+            height: 200px;
+        }
+    </style>
 
+</head>
 <body>
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
@@ -60,6 +71,8 @@
                             <li><a href="contact.php">Contact</a></li>
                             <li><a onclick="window.location = '../Food_store_website/check_out/shoppingcart.php'"><i class="fa-solid fa-cart-shopping"></i></a></li>
                           
+                            
+                        </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
@@ -95,6 +108,7 @@
             <br>
             <br>
             <?php
+          
             include('../Food_store_website/check_out/connectdb.php');
             $sql = "SELECT * FROM product;";
             $result = $mysqli->query($sql);
@@ -110,10 +124,10 @@
                                 </div>
                                 <div class="down-content">
                                     <span>
-                                        <?php if (empty($row["newprice"])) { ?>
+                                        <?php if (empty($row["newprice"]) or $row["newprice"] == 0) { ?>
                                             <sup>$</sup><em><?php echo $row["price"]; ?></em>
                                         <?php } else { ?>
-                                           <del><sup>$</sup><?php echo $row["price"]; ?></del> <sup>$</sup><em><?php echo $row["newprice"]; ?></em>
+                                            <del><sup>$</sup><?php echo $row["price"]; ?></del> <sup>$</sup><em><?php echo $row["newprice"]; ?></em>
                                         <?php } ?>
                                     </span>
 

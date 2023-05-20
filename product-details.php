@@ -21,10 +21,25 @@
       height: 30px;
 
     }
+
+    #img-pro{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      width: 300px;
+    }
   </style>
 </head>
-
+<?php
+  session_start();
+  $id = $_GET["id"];
+  include('C:\xampp\htdocs\project\Food_store_website\check_out\connectdb.php');
+  $sql = "SELECT * FROM product;";
+  $result = $mysqli->query($sql);
+  $product = array();
+  ?>
 <body>
+  
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
       <span class="dot"></span>
@@ -67,8 +82,8 @@
   </header>
   <?php
   session_start();
-  $id = $_POST["id"];
-  require('../Food_store_website/check_out/connectdb.php');
+  $id = $_GET["id"];
+  include('C:\xampp\htdocs\project\Food_store_website\check_out\connectdb.php');
   $sql = "SELECT * FROM product;";
   $result = $mysqli->query($sql);
   ?>
@@ -104,7 +119,7 @@
       <div class="row">
         <div class="col-md-8">
           <div style="position: relative; width: 100%; height: 100%;">
-            <img src="<?php echo $row["image_url"]; ?>" alt="" style="position: absolute; top: 50%; left: 1000%; transform: translate(-100%, -50%); width: 200px;">
+            <img src="<?php echo $row["image_url"]; ?>" alt="" style="position: absolute; top: 50%; left: 50%; transform: translate(-25%, -50%);">
           </div>
           <br>
         </div>
@@ -112,8 +127,9 @@
         error_reporting(0);
         if ($_POST["submit"]) {
           $qa = $_POST['quantity'];
-          $_SESSION['orders'] += array($id => $qa);
-          echo "<script> swal('Thành công', 'Bạn đã thêm sản phẩm vào giỏ hàng', 'success');</script>";
+          $product += array($id => $qa);
+          $_SESSION['orders'] += $product;
+          echo "<script> swal('Success', 'Successful', 'success');</script>";
         }
         ?>
         <div class="col-md-4">
@@ -128,12 +144,9 @@
                   <form action="" method="post">
                     <label>Quantity</label>
                     <input type="text" name="quantity">
-                    <input type="submit" name="submit" value="Submit" class="main-button">
+                    <input type="submit" name="submit" value="Order" class="main-button">
                   </form>
                 </div>
-              </div>
-              <div class="main-button">
-                <a href="products.php">Back</a>
               </div>
             </form>
           </div>
@@ -142,6 +155,7 @@
       </div>
     </div>
   </section>
+  <br> <br> <br> <br> <br> <br> <br>
   <footer>
     <div class="container">
       <div class="row">

@@ -33,11 +33,17 @@ session_start();
 </head>
 
 <body>
-
-
-
-
-
+    <?php 
+        include('../Food_store_website/check_out/connectdb.php');
+        $sql = "SELECT user_id FROM users where user_id = 1";
+        $result = $mysqli->query($sql);
+        $row = $result->fetch_assoc();
+        session_start();
+        $_SESSION["user_id"] = $row['user_id'];
+        if (!isset($_SESSION['orders'])) {
+            $_SESSION['orders'] = array();
+        } 
+    ?>
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
         <div class="preloader-inner">
