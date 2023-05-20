@@ -144,16 +144,20 @@ include('connectdb.php');
                         <button type="submit" class="btn btn-lg btn-primary mt-2" name="checkout" id="checkout">Checkout</button>
                     </div>
                 </form>
-                <?php 
+                <?php
                 $date_array = getdate();
                 $date .= $date_array['year'] . "-";
                 $date .= "0" . $date_array['mon'] . "-";
                 $date .= $date_array['mday'];
                 $status = "pending";
-                $check = "SELECT budget FROM user where user_id = $userid";
 
+                $check = "SELECT budget FROM user where user_id = $userid";
                 $query = $mysqli->query($check);
                 $row = $query->fetch_assoc();
+                $sqliquery = "SELECT * FROM User where email = 'admin' and user_password = 'admin';";
+                $run = $mysqli->query($sqliquery);
+                $ds = $run->fetch_assoc();
+                $adminid = $ds["user_id"];
                 if (isset($_POST['checkout'])) {
                     foreach ($_SESSION['orders'] as $key => $value) {
                         $pro = "SELECT * FROM Product where product_id = $key ;";
@@ -164,13 +168,23 @@ include('connectdb.php');
                         } else {
                             $price = $value * $rel['newprice'];
                         }
+                        $sellerid = $rel["user_id"];
 
                         if (floatval($row['budget']) >= $totalprice) {
-                            $muser = $row['budget'] - $price;
+                            $muser = $row['budget'] - $totalprice;
+                            $museller = floatval(($totalprice / 100) * 90);
+                            $muadmin = floatval(($totalprice / 100) * 10);
+
                             $sql = "INSERT INTO Orders(user_id,product_id,order_date,quantity,total_amount,pstatus) VALUES ($userid,$key,'$date',$value,$price,'$status')";
                             $add = $mysqli->query($sql);
-                            $minusmoney = "UPDATE user SET `budget`=$muser WHERE user_id = $userid";
+                            $minusmoney = "UPDATE user SET `budget`= $muser WHERE user_id = $userid";
+
                             $minusm = $mysqli->query($minusmoney);
+                            $sqlquery  = "UPDATE user SET `budget` =  `budget`+ $museller WHERE user_id = $sellerid  ";
+                            $runsql =  $mysqli->query($sqlquery);
+                            
+                            $qr  = "UPDATE user SET `budget` =  `budget`+$muadmin WHERE user_id =  $adminid ";
+                            $rsql =  $mysqli->query($qr);
                             if ($add) {
                                 $_SESSION['bills'] += $_SESSION['orders'];
                                 unset($_SESSION['orders'][$key]);
@@ -180,10 +194,12 @@ include('connectdb.php');
                             echo "<script>swal('Error', 'You don\'t have enough money to buy these items', 'error');</script>";
                             break;
                         }
-                    }
-                    if ($i > 0) {
-                        echo "<script>window.location.href ='http://localhost/Food_store_website/check_out/bill.php';</script>";
-                        exit;
+
+                        if ($i > 0) {
+                            require_once('./send_email.php');
+                            echo "<script>window.location.href ='http://localhost/Food_store_website/check_out/bill.php';</script>";
+                            exit;
+                        }
                     }
                 }
                 ?>

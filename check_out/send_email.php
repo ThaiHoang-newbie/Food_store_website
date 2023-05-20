@@ -4,71 +4,64 @@ session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require '../PHPMailer/src/Exception.php';
-require '../PHPMailer/src/PHPMailer.php';
-require '../PHPMailer/src/SMTP.php';
+require 'D:\Xampp\htdocs\Food_store_website\vendor\phpmailer\phpmailer\src\Exception.php';
+require 'D:\Xampp\htdocs\Food_store_website\vendor\phpmailer\phpmailer\src\PHPMailer.php';
+require 'D:\Xampp\htdocs\Food_store_website\vendor\phpmailer\phpmailer\src\SMTP.php';
 
-require_once('D:\Xampp\htdocs\Food_store_website\contact.php');
+require_once('D:\Xampp\htdocs\Food_store_website\connect.php');
+
+if (!isset($_SESSION["user_id"])) {
+    echo "User not logged in";
+    exit;
+}
+
 $userid = $_SESSION["user_id"];
 
 $select_email = "SELECT `email` FROM `user` WHERE `user_id` = '$userid'";
+$result = mysqli_query($conn, $select_email);
+
+if (!$result || mysqli_num_rows($result) === 0) {
+    echo "No email found for the user";
+    exit;
+}
+
+$email_row = mysqli_fetch_assoc($result);
+$email_user = $email_row['email'];
 
 $mail = new PHPMailer(true);
 
-// Configure an SMTP
-$mail->isSMTP();
-$mail->Host = 'smtp.gmail.com';
-$mail->SMTPAuth = true;
-$mail->Username = 'thaihoang20112k3@gmail.com';
-$mail->Password = 'nvygpergzqfvnacw';
-$mail->SMTPSecure = 'ssl';
-$mail->SMTPDebug = 0;
-$mail->Port = 465;
+try {
+    // Configure SMTP settings
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'thaihoang20112k3@gmail.com';
+    $mail->Password = 'nvygpergzqfvnacw';
+    $mail->SMTPSecure = 'ssl';
+    $mail->Port = 465;
 
-$mail->setFrom('thaihoang20112k3@gmail.com');
-$mail->addAddress($verify_email);
-$mail->isHTML(true);
-$mail->Subject = "[Food store website]_Your order";
+    $mail->setFrom('thaihoang20112k3@gmail.com');
+    $mail->addAddress($email_user);
+    $mail->isHTML(true);
+    $mail->Subject = "[Food store website] Your order";
 
+    $emailContent = file_get_contents('./bill.php');
 
-// Đọc nội dung email từ tệp tin HTML
-$emailContent = file_get_contents('./bill.php');
-
-$sql = "SELECT * FROM users where user_id = $userid;";
-$result = $mysqli->query($sql);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+    $sql = "SELECT * FROM user WHERE user_id = $userid;";
+    $result = $conn->query($sql);
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
         $emailContent = str_replace('{{name}}', $row['username'], $emailContent);
         $emailContent = str_replace('{{phone_number}}', $row['phone_number'], $emailContent);
         $emailContent = str_replace('{{address}}', $row['address'], $emailContent);
     }
-}
 
-$mail->Body = $emailContent;
+    $mail->Body = $emailContent;
 
-
-if (!$mail->send()) {
-    echo 'Sent order fail: ' . $mail->ErrorInfo;
-} else {
-    echo 'Sent order successful';
+    // Send the email
+    $mail->send();
+    echo 'Order sent successfully';
+} catch (Exception $e) {
+    echo 'Error sending order: ' . $mail->ErrorInfo;
 }
 ?>
-
-<script>
-    const checkoutButton = document.getElementById('done');
-    checkoutButton.addEventListener('click', function() {
-        fetch('send_email.php', {
-                method: 'POST',
-            })
-            .then(function(response) {
-                if (response.ok) {
-                    console.log('Email đã được gửi thành công');
-                } else {
-                    console.log('Có lỗi khi gửi email');
-                }
-            })
-            .catch(function(error) {
-                console.log('Có lỗi khi gửi email:', error);
-            });
-    });
-</script>
